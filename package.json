@@ -1,6 +1,6 @@
 {
   "name": "ck-crs",
-  "version": "0.6.6",
+  "version": "0.7.0",
   "description": "",
   "directories": {
     "test": "test"
@@ -30,9 +30,9 @@
     "merge2": "^1.0.0",
     "systemjs": "^0.19.*",
     "jasmine-core": "^2.4.1",
-    "ts-loader": "^0.7.2",
-    "typescript": "^1.7.5",
-    "webpack-stream": "^3.1.0"
+    "ts-loader": "^0.8.2",
+    "typescript": "^1.8.10",
+    "webpack-stream": "^3.2.0"
   },
   "author": "",
   "license": "ISC"

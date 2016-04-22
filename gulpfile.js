@@ -51,14 +51,14 @@ gulp.task('bundle:definitions', function(){
             .pipe(gulp.dest('./dist'));
 });
 
-gulp.task('bundle', function(){
-    return gulp.src(['./ts/core.ts'])
+gulp.task('bundle',["compile"], function(){
+    return gulp.src(['./core.js',])
             .pipe(webpack(require('./webpack.config.js')))
             .pipe(gulp.dest('./dist'));
 });
 
 gulp.task('build', function(cb){
-    runSequence(['compile', 'bundle'], 'concat:bundle', cb);
+    runSequence(['bundle'], 'concat:bundle', cb);
 });
 
 gulp.task('watch',['compile'], function(){
