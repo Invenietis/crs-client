@@ -9,5 +9,6 @@ __export(require('./src/listeners/SignalRListener'));
 __export(require('./src/listeners/HttpListener'));
 __export(require('./src/listeners/HubListener'));
 __export(require('./src/Main'));
+__export(require('./src/Response'));
 
 //# sourceMappingURL=core.js.map

@@ -6,3 +6,4 @@ export * from './src/listeners/SignalRListener';
 export * from './src/listeners/HttpListener';
 export * from './src/listeners/HubListener';
 export * from './src/Main';
+export * from './src/Response';

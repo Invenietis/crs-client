@@ -1,43 +1,5 @@
 import { Command } from "./Command";
-
-export class CommandResponse {
-    private static commands: {[commandId:string]: Command} = {};
-    
-    command: Command;
-    
-    /**
-    * The identifier of the command. 
-    */
-    commandId: string;
-    /**
-    * The payload of the result. *
-    */
-    payload: any;
-    
-    /**
-     * Type of the response
-     */
-    responseType: Number;
-    
-    constructor(data: any);
-    constructor(data: any, command: Command);
-    constructor(data: any, command?: Command){
-        this.responseType = data.responseType;
-        this.payload = data.payload;
-        this.commandId = data.commandId;
-        
-        if(command){
-            CommandResponse.commands[this.commandId] = command;
-            this.command = command;
-        } else{
-            this.command = CommandResponse.commands[this.commandId];
-        }
-        
-        if(!this.command){
-            throw `The command name cannot be resolved for the commandId ${this.commandId}`;
-        }
-    }
-}
+import {CommandResponse} from './Response';
 
 /**
  * The CommandEmitter is responsible to send command to the remote server

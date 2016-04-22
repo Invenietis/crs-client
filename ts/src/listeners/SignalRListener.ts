@@ -1,5 +1,6 @@
-﻿import { ICommandEmitter, ICommandResponseListener, ICommandRequestSender, CommandResponse } from "../Abstraction";
+﻿import { ICommandEmitter, ICommandResponseListener, ICommandRequestSender } from "../Abstraction";
 import { ResponseListener} from "./ResponseListener";
+import {CommandResponse} from '../Response';
 
 export class SignalRListener extends ResponseListener {
 

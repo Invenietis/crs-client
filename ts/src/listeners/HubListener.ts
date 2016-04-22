@@ -1,7 +1,8 @@
 import {ResponseListener} from './ResponseListener';
 import {HttpListener} from './HttpListener';
 import {SignalRListener} from './SignalRListener';
-import {ICommandResponseListener, CommandResponse} from "../Abstraction";
+import {ICommandResponseListener} from "../Abstraction";
+import {CommandResponse} from '../Response';
 
 export class HubListener implements ICommandResponseListener{
     

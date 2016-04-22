@@ -1,8 +1,7 @@
 /// <reference path="../../typings/main.d.ts" />
-
+import {CommandResponse, ResponseTypes} from '../src/Response';
 import {CommandEmitter} from '../src/CommandEmitter';
 import {Command} from '../src/Command';
-import {CommandResponse} from '../src/Abstraction';
 import {HubListener} from '../src/listeners/HubListener';
 import {SignalRListener} from '../src/listeners/SignalRListener';
 import {HttpListener} from '../src/listeners/HttpListener';
@@ -24,7 +23,7 @@ describe("Command Emitter Send Tests", function() {
     var date = new Date();
     var httpListener = new HttpListener();
     var hub = new FakeHubConnection();
-    var rTYpe = 1;
+    var rTYpe = ResponseTypes.Asynchronous;
     var commandSender = new CommandEmitter('/c', {
         send(url: string, command: Command) {
             return new Promise<any>(function(resolve, reject){
@@ -39,7 +38,7 @@ describe("Command Emitter Send Tests", function() {
                 var resp = new CommandResponse(data, command);
                 setTimeout(() => { 
                     resolve(resp);
-                   if(rTYpe == 0){
+                   if(rTYpe == ResponseTypes.Synchronous){
                        setTimeout(()=>{
                             httpListener.notify(resp);
                        },0);
@@ -62,7 +61,7 @@ describe("Command Emitter Send Tests", function() {
             expect(response.payload).toBeDefined();
             expect(response.payload.effectiveDate).toBe(date);
             expect(response.commandId).toBe('1234');
-            expect(response.responseType).toBe(0);
+            expect(response.responseType).toBe(ResponseTypes.Synchronous);
             done();
         });
         setTimeout(() =>{
@@ -71,7 +70,7 @@ describe("Command Emitter Send Tests", function() {
                     effectiveDate: date
                 },
                 commandId: '1234',
-                responseType: 0
+                responseType: ResponseTypes.Synchronous
             });
         }, 1100);
     });

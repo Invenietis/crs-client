@@ -1,7 +1,9 @@
-﻿import { ICommandEmitter, ICommandRequestSender, CommandResponse } from "./Abstraction";
+﻿import { ICommandEmitter, ICommandRequestSender } from "./Abstraction";
+import {CommandResponse, ResponseTypes} from './Response';
 import { HubListener } from "./listeners/HubListener";
 import { HttpListener } from "./listeners/HttpListener";
 import { AjaxSender } from "./AjaxSender";
+
 
 
 import { Command }  from "./Command";
@@ -30,7 +32,7 @@ export class CommandEmitter implements ICommandEmitter {
         return new Promise<CommandResponse>((resolve, reject) =>{
             self._sender.send(url, command).then((resp: CommandResponse) => {
                 self.listener.on(command.name, resp.commandId, (data) =>{
-                    if(data.responseType == -1 ){
+                    if(data.responseType == ResponseTypes.InternalError || data.responseType == ResponseTypes.ValidationError ){
                         reject(data);
                     } else {
                         resolve(data);

@@ -1,7 +1,7 @@
 /// <reference path="../../typings/main.d.ts" />
+var Response_1 = require('../src/Response');
 var CommandEmitter_1 = require('../src/CommandEmitter');
 var Command_1 = require('../src/Command');
-var Abstraction_1 = require('../src/Abstraction');
 var HubListener_1 = require('../src/listeners/HubListener');
 var SignalRListener_1 = require('../src/listeners/SignalRListener');
 var HttpListener_1 = require('../src/listeners/HttpListener');
@@ -23,7 +23,7 @@ describe("Command Emitter Send Tests", function () {
     var date = new Date();
     var httpListener = new HttpListener_1.HttpListener();
     var hub = new FakeHubConnection();
-    var rTYpe = 1;
+    var rTYpe = Response_1.ResponseTypes.Asynchronous;
     var commandSender = new CommandEmitter_1.CommandEmitter('/c', {
         send: function (url, command) {
             return new Promise(function (resolve, reject) {
@@ -34,10 +34,10 @@ describe("Command Emitter Send Tests", function () {
                     payload: '3712',
                     responseType: rTYpe // Deferred 
                 };
-                var resp = new Abstraction_1.CommandResponse(data, command);
+                var resp = new Response_1.CommandResponse(data, command);
                 setTimeout(function () {
                     resolve(resp);
-                    if (rTYpe == 0) {
+                    if (rTYpe == Response_1.ResponseTypes.Synchronous) {
                         setTimeout(function () {
                             httpListener.notify(resp);
                         }, 0);
@@ -58,7 +58,7 @@ describe("Command Emitter Send Tests", function () {
             expect(response.payload).toBeDefined();
             expect(response.payload.effectiveDate).toBe(date);
             expect(response.commandId).toBe('1234');
-            expect(response.responseType).toBe(0);
+            expect(response.responseType).toBe(Response_1.ResponseTypes.Synchronous);
             done();
         });
         setTimeout(function () {
@@ -67,7 +67,7 @@ describe("Command Emitter Send Tests", function () {
                     effectiveDate: date
                 },
                 commandId: '1234',
-                responseType: 0
+                responseType: Response_1.ResponseTypes.Synchronous
             });
         }, 1100);
     });

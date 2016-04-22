@@ -1,5 +1,6 @@
-import { ICommandEmitter, ICommandResponseListener, ICommandRequestSender, CommandResponse } from "../Abstraction";
+import { ICommandEmitter, ICommandResponseListener, ICommandRequestSender } from "../Abstraction";
 import { AjaxSender } from "../AjaxSender";
+import {CommandResponse} from '../Response';
 
 export abstract class ResponseListener implements ICommandResponseListener{
     callbackId: string = "";

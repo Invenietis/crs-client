@@ -1,4 +1,5 @@
-import {ICommandEmitter,ICommandResponseListener, CommandResponse} from './Abstraction';
+import {ICommandEmitter,ICommandResponseListener } from './Abstraction';
+import {CommandResponse} from './Response';
 import {Command} from './Command';
 import {CommandEmitter} from './CommandEmitter';
 import {AjaxSender} from './AjaxSender';

@@ -1,4 +1,6 @@
-﻿import { ICommandRequestSender, CommandResponse } from "./Abstraction";
+﻿import { ICommandRequestSender } from "./Abstraction";
+import {CommandResponse, ResponseTypes} from './Response';
+
 import {Command}  from "./Command";
 
 import{HttpListener} from './listeners/HttpListener'
@@ -24,7 +26,7 @@ export class AjaxSender implements ICommandRequestSender {
             }).then((data) => {
                 var resp = new CommandResponse(data, command);
                 
-                if(resp.responseType < 1){
+                if(resp.responseType != ResponseTypes.Asynchronous){
                     this.notifyListener(resp);
                 }
                 
