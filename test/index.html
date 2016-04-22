@@ -1,0 +1,34 @@
+<html>
+<head>
+    <title>Ck.Infrastrucuture.Commands Tests</title>
+    <script src="node_modules/jquery/dist/jquery.js"></script>
+    
+    <link rel="stylesheet" href="node_modules/jasmine-core/lib/jasmine-core/jasmine.css">
+    <script src="node_modules/jasmine-core/lib/jasmine-core/jasmine.js"></script>
+    <script src="node_modules/jasmine-core/lib/jasmine-core/jasmine-html.js"></script>
+    <script src="/test/boot.js"></script>
+    <script src="node_modules/systemjs/dist/system-polyfills.js"></script>
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="node_modules/es6-promise/dist/es6-promise.min.js"></script>
+    <script src="dist/ck-command.js"></script>
+    
+</head>
+<body>
+    
+     <script>
+        //Set the default extension to .js
+        System.defaultJSExtensions  = true;
+        System.config({
+            baseURL: '/test',
+        });
+        
+        //Import the spec file explicitly
+        Promise.all([
+            System.import('CommandSender.spec')
+        ]).then(executeTests)
+        .catch(function(err){
+            console.error(err);
+        });
+    </script>
+</body>
+</html>

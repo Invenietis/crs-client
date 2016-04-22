@@ -1,0 +1,39 @@
+{
+  "name": "ck-crs",
+  "version": "0.6.6",
+  "description": "",
+  "directories": {
+    "test": "test"
+  },
+  "exclude": [
+    "bundling"
+  ],
+  "scripts": {
+    "prepublish": "tsd install && gulp build & gulp doc",
+    "test": "concurrent \"gulp watch\" \"lite-server --open ./test\"",
+    "doc": "gulp doc",
+    "build": "tsd install && gulp build"
+  },
+  "dependencies": {
+    "jquery": "^2.2.0",
+    "es6-promise": "^3.0.2"
+  },
+  "devDependencies": {
+    "concurrently": "^1.0.0",
+    "gulp": "^3.9.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-plumber": "^1.0.1",
+    "gulp-typescript": "2.10.0",
+    "gulp-typedoc": "^1.2.1",
+    "run-sequence": "1.1.5",
+    "merge2": "^1.0.0",
+    "systemjs": "^0.19.*",
+    "jasmine-core": "^2.4.1",
+    "ts-loader": "^0.7.2",
+    "typescript": "^1.7.5",
+    "webpack-stream": "^3.1.0"
+  },
+  "author": "",
+  "license": "ISC"
+}

@@ -1,0 +1,18 @@
+﻿{
+    "compilerOptions": {
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "declaration": true,
+        "noImplicitAny": false,
+        "removeComments": false,
+        "noEmitOnError": false,
+        "outDir": "..",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "target": "es5"
+    },
+    "files": [
+        "../typings/main.d.ts",
+        "core.ts"
+    ]
+}
