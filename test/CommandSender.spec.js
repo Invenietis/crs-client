@@ -24,6 +24,15 @@ describe("Command Emitter Send Tests", function () {
     var httpListener = new HttpListener_1.HttpListener();
     var hub = new FakeHubConnection();
     var rTYpe = Response_1.ResponseTypes.Asynchronous;
+    var metaProvider = {
+        load: function () {
+            return new Promise(function (resolve, reject) {
+                resolve({
+                    payload: {}
+                });
+            });
+        }
+    };
     var commandSender = new CommandEmitter_1.CommandEmitter('/c', {
         send: function (url, command) {
             return new Promise(function (resolve, reject) {
@@ -45,7 +54,7 @@ describe("Command Emitter Send Tests", function () {
                 }, 1000);
             });
         }
-    }, new HubListener_1.HubListener(httpListener, new SignalRListener_1.SignalRListener(hub, 'default')));
+    }, new HubListener_1.HubListener(httpListener, new SignalRListener_1.SignalRListener(hub, 'default')), metaProvider);
     it("Send a command should trigger an Xhr request to the server", function (done) {
         var command = new Command_1.Command('TransferAmount', {
             sourceAccountId: '7A8125D3-2BF9-45DE-A258-CE0D3C17892D',

@@ -1,4 +1,4 @@
-export class Command {
+export class Command { 
     name: string;
     properties: any;
     

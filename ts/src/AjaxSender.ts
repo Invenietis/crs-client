@@ -1,8 +1,6 @@
 ﻿import { ICommandRequestSender } from "./Abstraction";
 import {CommandResponse, ResponseTypes} from './Response';
-
 import {Command}  from "./Command";
-
 import{HttpListener} from './listeners/HttpListener'
 
 export class AjaxSender implements ICommandRequestSender {

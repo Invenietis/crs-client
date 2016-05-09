@@ -1,6 +1,6 @@
 {
   "name": "ck-crs",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "",
   "directories": {
     "test": "test"
@@ -9,7 +9,7 @@
     "bundling"
   ],
   "scripts": {
-    "prepublish": "tsd install && gulp build & gulp doc",
+    "prepublish": "gulp build",
     "test": "concurrent \"gulp watch\" \"lite-server --open ./test\"",
     "doc": "gulp doc",
     "build": "tsd install && gulp build"

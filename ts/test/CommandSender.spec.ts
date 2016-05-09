@@ -5,6 +5,7 @@ import {Command} from '../src/Command';
 import {HubListener} from '../src/listeners/HubListener';
 import {SignalRListener} from '../src/listeners/SignalRListener';
 import {HttpListener} from '../src/listeners/HttpListener';
+import { MetaProvider, HttpMetaProvider } from '../src/MetaProvider'
 
 class FakeHubConnection  {
       //(url?: string, queryString?: any, logging?: boolean): HubConnection;
@@ -24,6 +25,16 @@ describe("Command Emitter Send Tests", function() {
     var httpListener = new HttpListener();
     var hub = new FakeHubConnection();
     var rTYpe = ResponseTypes.Asynchronous;
+    var metaProvider = {
+        load: function(){
+            return new Promise((resolve, reject) => {
+                resolve({
+                    payload: {}
+                });
+            });
+        }
+    };
+
     var commandSender = new CommandEmitter('/c', {
         send(url: string, command: Command) {
             return new Promise<any>(function(resolve, reject){
@@ -46,7 +57,7 @@ describe("Command Emitter Send Tests", function() {
                 }, 1000);
             });
         }
-    }, new HubListener(httpListener, new SignalRListener(<any>hub  , 'default')));
+    }, new HubListener(httpListener, new SignalRListener(<any>hub  , 'default')), metaProvider) ;
     
     it("Send a command should trigger an Xhr request to the server", function(done){
          var command = new Command ('TransferAmount', {

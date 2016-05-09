@@ -10,8 +10,6 @@ export abstract class ResponseListener implements ICommandResponseListener{
     constructor(){}
     
     notify(response: CommandResponse){
-        console.log(this._listeners);
-        
         for(var commandName in this._listeners){
             var idListeners = this._listeners[commandName][response.commandId];
             var listeners = this._listeners[commandName][commandName];
