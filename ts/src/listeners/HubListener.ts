@@ -8,7 +8,7 @@ export class HubListener implements ICommandResponseListener{
     
     constructor();
     constructor(httpListener: HttpListener);
-    constructor(httpListener: HttpListener, signalRListener: SignalRListener );
+    constructor(httpListener: HttpListener, wsListener: SignalRListener );
     constructor(private _http?: HttpListener, private _ws?: SignalRListener) {
         if(!this._http){
             this._http = new HttpListener();

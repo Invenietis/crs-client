@@ -1,6 +1,7 @@
 import {Command} from './Command';
 export class CommandResponse {
     private static commands: {[commandId:string]: Command} = {};
+    private static pendings: {[commandId:string]: { data:any,  created: (response: CommandResponse) => void } } = {};
     
     command: Command;
     
@@ -24,17 +25,37 @@ export class CommandResponse {
         this.responseType = data.responseType;
         this.payload = data.payload;
         this.commandId = data.commandId;
-        
+         
         if(command){
             CommandResponse.commands[this.commandId] = command;
             this.command = command;
+            var pending = CommandResponse.pendings[data.commandId];
+            
+            if( pending ){
+                delete CommandResponse.pendings[data.commandId];
+                setTimeout(()=> {
+                    pending.created(new CommandResponse(pending.data));
+                });
+            }
         } else{
             this.command = CommandResponse.commands[this.commandId];
-        }
+        } 
         
         if(!this.command){
             throw `The command name cannot be resolved for the commandId ${this.commandId}`;
         }
+    }
+    
+    static safeCreate(data: any, created: (response: CommandResponse) => void){
+        var command = CommandResponse.commands[data.commandId];
+        if(command){
+            return created(new CommandResponse(data));
+        }
+        
+        CommandResponse.pendings[data.commandId] = {
+            data: data,
+            created: created
+        }; 
     }
 }
 

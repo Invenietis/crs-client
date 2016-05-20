@@ -2,6 +2,8 @@
 import {CommandResponse, ResponseTypes} from './Response';
 import { HubListener } from "./listeners/HubListener";
 import { HttpListener } from "./listeners/HttpListener";
+import { SignalRListener } from "./listeners/SignalRlistener";
+
 import { AjaxSender } from "./AjaxSender";
 import { Command }  from "./Command";
 import { MetaResponse, CrsMeta } from './Meta'
@@ -14,9 +16,12 @@ export class CommandEmitter implements ICommandEmitter {
     public meta: CrsMeta = null;
     private _metaPromise: Promise<CrsMeta>;
     
-    public static create(uriBase: string){
+    public static create(uriBase: string)
+    public static create(uriBase: string, signalRConnection: HubConnection)
+    public static create(uriBase: string, signalRConnection?: HubConnection){
         var httpListener = new HttpListener();
-        var hub = new HubListener(httpListener);
+        var wsListener = signalRConnection ? new SignalRListener(signalRConnection, "crs") : null;
+        var hub = new HubListener(httpListener, wsListener);
         var metaProvider = new HttpMetaProvider(uriBase);
         
         return new CommandEmitter(uriBase, new AjaxSender(httpListener), hub, metaProvider);
