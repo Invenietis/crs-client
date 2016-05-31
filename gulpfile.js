@@ -34,7 +34,7 @@ gulp.task("doc", function(){
 });
 
 gulp.task('compile', function(){
-     var tsResult = gulp.src(['./ts/**/*.ts', './typings/main.d.ts'])
+     var tsResult = gulp.src(['./ts/**/*.ts', './typings/index.d.ts'])
         .pipe(sourcemaps.init())
 		.pipe(ts(tsProject));
 	  

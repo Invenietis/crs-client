@@ -17,8 +17,8 @@ export class CommandEmitter implements ICommandEmitter {
     private _metaPromise: Promise<CrsMeta>;
     
     public static create(uriBase: string)
-    public static create(uriBase: string, signalRConnection: HubConnection)
-    public static create(uriBase: string, signalRConnection?: HubConnection){
+    public static create(uriBase: string, signalRConnection: SignalR.Hub.Connection)
+    public static create(uriBase: string, signalRConnection?: SignalR.Hub.Connection){
         var httpListener = new HttpListener();
         var wsListener = signalRConnection ? new SignalRListener(signalRConnection, "crs") : null;
         var hub = new HubListener(httpListener, wsListener);

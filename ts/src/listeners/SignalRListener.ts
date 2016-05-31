@@ -1,11 +1,12 @@
-﻿import { ICommandEmitter, ICommandResponseListener, ICommandRequestSender } from "../Abstraction";
+﻿
+import { ICommandEmitter, ICommandResponseListener, ICommandRequestSender } from "../Abstraction";
 import { ResponseListener} from "./ResponseListener";
 import {CommandResponse} from '../Response';
 
 export class SignalRListener extends ResponseListener {
-    private _hub: HubProxy;
+    private _hub: SignalR.Hub.Proxy;
     
-    constructor(private _hubConnection: HubConnection, hubName: string) {
+    constructor(private _hubConnection: SignalR.Hub.Connection, hubName: string) {
         super();
         this._hub = this._hubConnection.createHubProxy("crs");
         

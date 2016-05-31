@@ -1,4 +1,4 @@
-/// <reference path="../../typings/main.d.ts" />
+/// <reference path="../../typings/index.d.ts" />
 import {CommandResponse, ResponseTypes} from '../src/Response';
 import {CommandEmitter} from '../src/CommandEmitter';
 import {Command} from '../src/Command';
@@ -14,7 +14,9 @@ class FakeHubConnection  {
             ReceiveCommandResponse: function(data: any){}
         }
     }};
-    
+    createHubProxy(){
+        
+    }
     result(data){
         this.proxies.default.client.ReceiveCommandResponse(data);
     }

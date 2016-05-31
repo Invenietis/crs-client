@@ -1,4 +1,4 @@
-/// <reference path="../../typings/main.d.ts" />
+/// <reference path="../../typings/index.d.ts" />
 var Response_1 = require('../src/Response');
 var CommandEmitter_1 = require('../src/CommandEmitter');
 var Command_1 = require('../src/Command');
@@ -14,6 +14,8 @@ var FakeHubConnection = (function () {
                 }
             } };
     }
+    FakeHubConnection.prototype.createHubProxy = function () {
+    };
     FakeHubConnection.prototype.result = function (data) {
         this.proxies.default.client.ReceiveCommandResponse(data);
     };
