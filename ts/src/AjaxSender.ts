@@ -12,7 +12,7 @@ export class AjaxSender implements ICommandRequestSender {
         }
     }
     
-    send(url: string, command: Command) {
+    send(url: string, command: Command): Promise<any> {
         var json = JSON.stringify(command.properties);
         
         return new Promise<any>((resolve, reject) =>{

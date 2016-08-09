@@ -16,9 +16,9 @@ export class CommandEmitter implements ICommandEmitter {
     public meta: CrsMeta = null;
     private _metaPromise: Promise<CrsMeta>;
     
-    public static create(uriBase: string)
-    public static create(uriBase: string, signalRConnection: SignalR.Hub.Connection)
-    public static create(uriBase: string, signalRConnection?: SignalR.Hub.Connection){
+    public static create(uriBase: string) : CommandEmitter;
+    public static create(uriBase: string, signalRConnection: SignalR.Hub.Connection): CommandEmitter;
+    public static create(uriBase: string, signalRConnection?: SignalR.Hub.Connection): CommandEmitter {
         var httpListener = new HttpListener();
         var wsListener = signalRConnection ? new SignalRListener(signalRConnection, "crs") : null;
         var hub = new HubListener(httpListener, wsListener);
@@ -34,8 +34,11 @@ export class CommandEmitter implements ICommandEmitter {
         this.loadMeta();
     }
     
-    public emit(command: Command);
-    public emit(commandName:string, properties:any);
+    /**
+     * Emit a command to the remote server
+     */
+    public emit(command: Command): Promise<CommandResponse>;
+    public emit(commandName:string, properties:any): Promise<CommandResponse>;
     public emit(commandOrName: Command | string, properties?: any ): Promise<CommandResponse> {
         var command;
         if(typeof commandOrName == 'string'){
@@ -64,6 +67,16 @@ export class CommandEmitter implements ICommandEmitter {
         });
     }
     
+    /**
+     * Call the given function after the Crs metadata is loaded
+     */
+    public onMetaLoaded( callback: (meta: CrsMeta)=> void){
+        this._metaPromise.then(callback);
+    }
+
+    /**
+     * Load the Crs metadata
+     */
     private loadMeta(): Promise<CrsMeta>{
         var self = this;
         
@@ -78,6 +91,9 @@ export class CommandEmitter implements ICommandEmitter {
         return this._metaPromise;
     }
     
+    /**
+     * Inject the ambiant values inside the given command parameters
+     */
     private injectAmbientValues(command: Command){
         if(this.meta){
             for(var aVal in this.meta.ambientValues){
