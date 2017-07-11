@@ -22,3 +22,35 @@ export class CommandEmitter {
         return response;
     }
 }
+
+export class CommandEmitterProxy extends CommandEmitter {
+    private pendingCommands: Array<{
+        command: Object,
+        resolve: (resp: CommandResponse) => void,
+        reject: (reason?: any) => void
+    }> = [];
+    private isReady: boolean = false;
+
+    constructor(endpoint: string, requestSender: CommandRequestSender, ambiantValues: AmbiantValuesProvider) {
+        super(endpoint, requestSender, ambiantValues);
+    }
+    
+    ready() {
+        this.pendingCommands.forEach( pending => {
+            super.emit(pending.command)
+                .then( resp => pending.resolve(resp))
+                .catch( e => pending.reject(e));
+        });
+        this.isReady = true;
+    }
+
+    emit<T extends Object>(command: T): Promise<CommandResponse> {
+        if (this.isReady) {
+            return super.emit(command);
+        }
+
+        return new Promise<CommandResponse>((resolve, reject) => {
+            this.pendingCommands.push({command, resolve, reject});
+        });
+    }
+}

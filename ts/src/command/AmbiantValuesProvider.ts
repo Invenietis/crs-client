@@ -1,10 +1,17 @@
 export class AmbiantValuesProvider {
+    private _values: any;
+    get values() {
+        return this._values;
+    } 
 
-    merge(obj: any): any {
-        return obj;
+    constructor(values?: any) {
+        this._values = values;
     }
-
-    getAmbiantValues() {
-
+    
+    setValues(values) {
+        this._values = values;
+    }
+    merge(obj: any): any {
+        return {...obj, ...this.values};
     }
 }

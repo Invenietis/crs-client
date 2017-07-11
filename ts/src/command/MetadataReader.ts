@@ -1,10 +1,10 @@
 import { MetadataPath, EndpointMetadataResponse } from './EndpointMetadata';
 
 export interface MetadataReader {
-    read();
+    read(endpoint: string, showCommands: boolean): Promise<EndpointMetadataResponse>;
 }
 
-export class FetchMetadataReader {
+export class FetchMetadataReader implements MetadataReader {
     read(endpoint: string, showCommands = false): Promise<EndpointMetadataResponse> {
         const url = `${endpoint}/${MetadataPath}`;
         return fetch(url, {

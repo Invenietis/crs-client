@@ -9,10 +9,9 @@
 
             }
             Crs.Command('supercommand')(SuperCmd)
-            const sender = new Crs.FetchCommandSender();
-            const abp = new Crs.AmbiantValuesProvider();
-            const emitter = new Crs.CommandEmitter('http://localhost:12839/my-crs-public',  sender, abp);
             const cmd = new SuperCmd();
+            const ep = new Crs.CrsEndpoint('http://localhost:12839/my-crs-public');
+            const emitter = ep.emitter;
             emitter.emit(cmd)
         </script>
     </body>
