@@ -1,6 +1,7 @@
-import {CommandResponse} from  './Response'
+export const MetadataPath = "__meta";
+import { CommandResponse } from  './CommandResponse'
 
-export interface CommandMeta{
+export interface CommandMetadata {
     commandType: string;
     route: {
         fullPath: string,
@@ -16,12 +17,12 @@ export interface CommandMeta{
     }>
 }
 
-export interface CrsMeta {
+export interface EndpointMetadata {
     version: number;
     ambientValues: {[ambiantValue: string]: any};
-    commands: {[commandName: string]: CommandMeta};
+    commands?: {[commandName: string]: CommandMetadata};
 }
 
-export class MetaResponse extends CommandResponse {
-    payload: CrsMeta;
+export interface EndpointMetadataResponse extends CommandResponse {
+    payload: EndpointMetadata;
 }

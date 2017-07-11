@@ -1,16 +1,16 @@
-module.exports = {  
+module.exports = {
+    entry: './ts/src/index.ts',
     output: {
-        filename: 'ck-crs.js',
-        library: 'CRS'
+        filename: 'crs-client.js',
+        library: 'Crs',
+        libraryTarget: 'umd'
     },
-  
-    devtool: 'source-map',
     resolve: {
-        extensions: ['', '.webpack.js', '.web.js',  '.js']
+        extensions: ['.ts', '.js']
     },
     module: {
-        // loaders: [
-        //     { test: /\.ts(x?)$/ }
-        // ]
+        rules: [
+            { test: /\.ts$/, loader: 'ts-loader' }
+        ]
     }
 }

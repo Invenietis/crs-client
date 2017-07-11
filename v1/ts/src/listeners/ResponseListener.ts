@@ -24,7 +24,7 @@ export abstract class ResponseListener implements ICommandResponseListener{
     
     on(commandName: string, callback: (response: CommandResponse) => void)
     on(commandName: string, commandId: string, callback: (response: CommandResponse) => void);
-    on(commandName: string, commandIdOrCallback:any,callback?: (response: CommandResponse) => void){
+    on(commandName: string, commandIdOrCallback:any, callback?: (response: CommandResponse) => void){
         var commandId = typeof(commandIdOrCallback) == 'string' ? <string>commandIdOrCallback : commandName;
         callback = callback || commandIdOrCallback;
         

@@ -40,6 +40,6 @@ export interface ICommandResponseListener {
     off(commandName: string, commandId: string, callback: (response: CommandResponse) => void);
 }
 
-export interface ICommandRequestSender {
+export interface CommandRequestSender {
     send: (endpoint: string, command: Command) => Promise<any>;
 }

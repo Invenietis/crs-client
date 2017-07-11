@@ -1,0 +1,19 @@
+<html>
+    <head>
+        <script src="crs-client.js"></script>
+    </head>
+    <body>
+        <h1>Je vous</h1>
+        <script>
+            class SuperCmd {
+
+            }
+            Crs.Command('supercommand')(SuperCmd)
+            const sender = new Crs.FetchCommandSender();
+            const abp = new Crs.AmbiantValuesProvider();
+            const emitter = new Crs.CommandEmitter('http://localhost:12839/my-crs-public',  sender, abp);
+            const cmd = new SuperCmd();
+            emitter.emit(cmd)
+        </script>
+    </body>
+</html>

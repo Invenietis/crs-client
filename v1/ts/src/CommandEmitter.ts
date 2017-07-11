@@ -55,7 +55,7 @@ export class CommandEmitter implements ICommandEmitter {
                 self.injectAmbientValues(command);
                 
                 self._sender.send(url, command).then((resp: CommandResponse) => {
-                    self.listener.on(command.name, resp.commandId, (data) =>{
+                    self.listener.on(command.name, resp.commandId, (data) => {
                         if(data.responseType == ResponseTypes.InternalError || data.responseType == ResponseTypes.ValidationError ){
                             reject(data);
                         } else {
