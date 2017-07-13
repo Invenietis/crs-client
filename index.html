@@ -1,18 +1,21 @@
 <html>
     <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.4.2/Rx.min.js"></script>
         <script src="crs-client.js"></script>
     </head>
     <body>
         <h1>Je vous</h1>
         <script>
             class SuperCmd {
-
+                
             }
             Crs.Command('supercommand')(SuperCmd)
             const cmd = new SuperCmd();
-            const ep = new Crs.CrsEndpoint('http://localhost:12839/my-crs-public');
+            const cnx = new Crs.WebsocketConnection();
+            const ep = new Crs.CrsEndpoint('http://localhost:12839/my-crs-public', cnx);
             const emitter = ep.emitter;
-            emitter.emit(cmd)
+            
+            emitter.emit(cmd);
         </script>
     </body>
 </html>

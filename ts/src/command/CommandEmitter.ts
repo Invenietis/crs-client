@@ -1,7 +1,9 @@
 import { CommandRequestSender } from './CommandRequestSender';
-import { AmbiantValuesProvider } from './AmbiantValuesProvider';
-import { readCommandName } from './Command';
+import { AmbiantValuesProvider } from '../metadata/AmbiantValuesProvider';
+import { readCommandName, readCommandEvents } from './Command';
 import { CommandResponse } from './CommandResponse';
+import { EventReceiver } from '../event/EventReceiver';
+import { Observable } from 'rxjs/Observable';
 
 export class CommandEmitter {
     readonly endpoint: string;
@@ -34,7 +36,7 @@ export class CommandEmitterProxy extends CommandEmitter {
     constructor(endpoint: string, requestSender: CommandRequestSender, ambiantValues: AmbiantValuesProvider) {
         super(endpoint, requestSender, ambiantValues);
     }
-    
+
     ready() {
         this.pendingCommands.forEach( pending => {
             super.emit(pending.command)
@@ -51,6 +53,54 @@ export class CommandEmitterProxy extends CommandEmitter {
 
         return new Promise<CommandResponse>((resolve, reject) => {
             this.pendingCommands.push({command, resolve, reject});
+        });
+    }
+}
+
+export enum EventType {
+    CommandResponse = 'CommandResponse',
+    Event = 'Event'
+}
+
+export interface EventResult {
+    type: EventType;
+    data: CommandResponse | any;
+}
+
+export class CommandEmitterSubscriber {
+    readonly receiver: EventReceiver;
+    private emitter: CommandEmitterProxy;
+
+    constructor(
+        endpoint: string,
+        requestSender: CommandRequestSender,
+        ambiantValues: AmbiantValuesProvider,
+        eventReceiver: EventReceiver
+    ) {
+        this.emitter = new CommandEmitterProxy(endpoint, requestSender, ambiantValues);
+        this.receiver = eventReceiver;
+    }
+
+    ready() {
+        this.emitter.ready();
+    }
+
+    emit<T extends Object>(command: T): Observable<EventResult> {
+        const events = readCommandEvents(command);
+        const responsePromise = this.emitter.emit(command);
+                
+        return new Observable((subscribe) => {    
+            const callback = event => {
+                subscribe.next({
+                    type: EventType.Event,
+                    data: event
+                });
+            };
+            events.forEach( e => this.receiver.on(e, callback));
+            responsePromise.then( resp => subscribe.next({
+                type: EventType.CommandResponse,
+                data: resp
+            }));
         });
     }
 }

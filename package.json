@@ -10,14 +10,18 @@
   ],
   "scripts": {
     "tsc": "tsc",
-    "bundle": "webpack --profile --bail",
-    "build": "npm run tsc"
+    "bundle": "cross-env EXCLUDE_RX=1 webpack --profile --bail",
+    "bundle:observable": "webpack --profile --bail",
+    "build": "npm run tsc && npm run bundle && npm run bundle:observable"
   },
-  "dependencies": {
-    "reflect-metadata": "~0.1.10"
+  "peerDependencies": {
+    "rxjs": "^5.0.0"
   },
+  "dependencies": {},
   "devDependencies": {
     "concurrently": "^3.5.0",
+    "cross-env": "^5.0.1",
+    "rxjs": "^5.4.2",
     "ts-loader": "^2.2.2",
     "typescript": "~2.4.1",
     "webpack": "~3.1.0"

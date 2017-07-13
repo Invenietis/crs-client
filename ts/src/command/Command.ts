@@ -25,7 +25,7 @@ export function readCommandName(command: Object): string {
     return meta.name;
 }
 
-export function readCommandEvents<T extends Object>(command: Object): string[] {
+export function readCommandEvents(command: Object): string[] {
     const meta = readMetadata(command);
     return meta.events;
 }

@@ -18,9 +18,9 @@
             "es2017"
         ]
     },
- 
     "exclude": [
         "node_modules",
+        "src",
         "v1"
     ]
 }

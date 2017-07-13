@@ -1,5 +1,5 @@
 export const MetadataPath = "__meta";
-import { CommandResponse } from  './CommandResponse'
+import { CommandResponse } from  '../command/CommandResponse'
 
 export interface CommandMetadata {
     commandType: string;
