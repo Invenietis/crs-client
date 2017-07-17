@@ -19,10 +19,9 @@ export interface CommandMetadata {
 
 export interface EndpointMetadata {
     version: number;
-    ambientValues?: {[ambiantValue: string]: any};
+    ambientValues?: {[ambiantValue: string]: any };
     commands?: {[commandName: string]: CommandMetadata};
 }
 
-export interface EndpointMetadataResponse extends CommandResponse {
-    payload: EndpointMetadata;
+export interface EndpointMetadataResponse extends CommandResponse<EndpointMetadata> {
 }

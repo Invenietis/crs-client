@@ -1,15 +1,14 @@
-﻿{
+{
     "compilerOptions": {
-        "declaration": true,
+        "declaration": false,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
-        "module": "es2015",
-        "target": "es2015",
+        "module": "commonjs",
         "moduleResolution": "node",
         "noEmitOnError": false,
-        "outDir": ".",
         "rootDir": "ts",
         "sourceMap": true,
+        "target": "es5",
         "skipLibCheck": true,
         "lib": [
             "dom",
@@ -18,9 +17,6 @@
             "es2017"
         ]
     },
-    "include": [
-        "ts/**/*.ts"
-    ],
     "exclude": [
         "node_modules",
         "src",

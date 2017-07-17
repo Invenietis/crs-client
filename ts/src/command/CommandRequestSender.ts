@@ -1,10 +1,10 @@
 import { CommandResponse } from './CommandResponse';
 export interface CommandRequestSender {
-    send: (url: string, body: any) => Promise<CommandResponse>;
+    send: (url: string, body: any) => Promise<CommandResponse<any>>;
 }
 
 export class FetchCommandSender implements CommandRequestSender {
-    send(url: string, body: any): Promise<CommandResponse> {
+    send(url: string, body: any): Promise<CommandResponse<any>> {
         return fetch(url, {
             method: 'post',
             credentials: 'include',
