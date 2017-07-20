@@ -4,6 +4,12 @@ interface CommandMetadata {
     events: string[];
 }
 
+/**
+ * The command decorator let you bind a command class with a command name.
+ * You can also provides a list of events on wich the emitter will subscirbe on 
+ * @param name The command name
+ * @param events Any events that the command will trigger during its execution.  
+ */
 export function Command(name: string, ...events: string[]) {
     return function(target: any) {
         target[CommandMetadataSym] = {name, events};

@@ -14,9 +14,13 @@ import {
     FetchMetadataReader
 } from './metadata';
 
+/**
+ * Wrap a crs endpoint connection.
+ * Provide the crs endpoint metadata, the ambiant values and the {CommandEmitter} for the endpoint.
+ */
 export class CrsEndpoint {
-    readonly endpoint: string;
     metadata: EndpointMetadata;
+    readonly endpoint: string;
     private ambiantValuesProvider: AmbiantValuesProvider;
     private _emitter: CommandEmitterSubscriber;
     private _receiver: EventReceiver;

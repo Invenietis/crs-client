@@ -1,23 +1,19 @@
 <html>
     <head>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.4.2/Rx.min.js"></script>
-        <script src="dist/crs-client.js"></script>
+        <script src="dist/crs-client-observable.js"></script>
     </head>
     <body>
-        <h1>Je vous</h1>
         <script>
-            class SuperCmd {
-                
-            }
             Crs.Command('supercommand')(SuperCmd)
-            const cmd = new SuperCmd();
-            const cnx = new Crs.WebsocketConnection();
-            const ep = new Crs.CrsEndpoint('http://localhost:12839/my-crs-public', cnx);
-            const emitter = ep.emitter;
-            
-            emitter.emit(cmd).subscribe( resp => {
-                console.log(resp.payload)
-            });
+            function SuperCmd(hello) {
+                this.hello = hello;
+            }
+
+            var endpoint = new Crs.CrsEndpoint('http://localhost:12839/my-crs-public');
+            var emitter = endpoint.emitter;
+            endpoint.connect();
+
+            emitter.emit(new SuperCmd('hello world!'));
         </script>
     </body>
 </html>

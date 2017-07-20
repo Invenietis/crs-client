@@ -1,10 +1,13 @@
-import { CommandRequestSender } from './CommandRequestSender';
 import { AmbiantValuesProvider } from '../metadata/AmbiantValuesProvider';
 import { readCommandName, readCommandEvents } from './Command';
 import { CommandResponse } from './CommandResponse';
 import { EventReceiver } from '../event/EventReceiver';
 import { Observable, Subscriber } from 'rxjs/Rx';
+import { CommandRequestSender } from './CommandRequestSender';
 
+/**
+ * Base class to emit commands
+ */
 export class CommandEmitter {
     readonly endpoint: string;
     readonly sender: CommandRequestSender;
@@ -25,6 +28,9 @@ export class CommandEmitter {
     }
 }
 
+/**
+ * Emitter that enqueue the emitted commands until the endpoint is ready
+ */
 export class CommandEmitterProxy extends CommandEmitter {
     private pendingCommands: Array<{
         command: Object,
@@ -62,7 +68,9 @@ export enum EventType {
     Event = 'Event'
 }
 
-
+/**
+ * Emitter that subscribe on the command events specified with {Command}
+ */
 export class CommandEmitterSubscriber extends CommandEmitterProxy {
     readonly receiver: EventReceiver;
 
@@ -86,14 +94,6 @@ export class CommandEmitterSubscriber extends CommandEmitterProxy {
                 };
                 events.forEach(e => this.receiver.on(e, callback));
             }
-        }))
-        // return new Observable(subscriber => {
-        //     if (this.receiver) {
-        //         const callback = event => {
-        //             subscriber.next(event);
-        //         };
-        //         events.forEach(e => this.receiver.on(e, callback));
-        //     }
-        // });
+        }));
     }
 }
