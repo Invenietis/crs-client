@@ -17,6 +17,8 @@ import {
 /**
  * Wrap a crs endpoint connection.
  * Provide the crs endpoint metadata, the ambiant values and the {CommandEmitter} for the endpoint.
+ * Each new {CrsEndpoint} instance must call the connect method in order to initialize the endpoint.
+ * During the initialization phase, the CrsEndppoint will fetch the endpoint metadata in order to get information like the ambiant values, version number, etc.
  */
 export class CrsEndpoint {
     metadata: EndpointMetadata;

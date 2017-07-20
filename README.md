@@ -70,3 +70,5 @@ endpoint.connect();
 // send the command
 emitter.emit(new SuperCmd('hello world!'));
 ```
+
+*Note that crs-client use fetch to make xhr requests. You may need a pollyfill for older browser*
