@@ -1,19 +1,24 @@
 <html>
-    <head>
-        <script src="dist/crs-client-observable.js"></script>
-    </head>
-    <body>
-        <script>
-            Crs.Command('supercommand')(SuperCmd)
-            function SuperCmd(hello) {
-                this.hello = hello;
-            }
 
-            var endpoint = new Crs.CrsEndpoint('http://localhost:12839/my-crs-public');
-            var emitter = endpoint.emitter;
-            endpoint.connect();
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.4.3/Rx.min.js"></script>
+    <script src="dist/crs-client.js"></script>
+</head>
 
-            emitter.emit(new SuperCmd('hello world!'));
-        </script>
-    </body>
+<body>
+    <script>
+        Crs.Command('supercommand')(SuperCmd)
+
+        function SuperCmd(hello) {
+            this.hello = hello;
+        }
+
+        var endpoint = new Crs.CrsEndpoint('http://localhost:12839/my-crs-public');
+        var emitter = endpoint.emitter;
+        endpoint.connect();
+
+        emitter.emit(new SuperCmd('hello world!')).subscribe(r => console.log(r));
+    </script>
+</body>
+
 </html>

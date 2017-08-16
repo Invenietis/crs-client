@@ -1,8 +1,11 @@
+import 'rxjs/add/observable/fromPromise';
+import 'rxjs/add/operator/merge';
 import { AmbiantValuesProvider } from '../metadata/AmbiantValuesProvider';
 import { readCommandName, readCommandEvents } from './Command';
 import { CommandResponse } from './CommandResponse';
 import { EventReceiver } from '../event/EventReceiver';
-import { Observable, Subscriber } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
+import { Subscriber } from 'rxjs/Subscriber';
 import { CommandRequestSender } from './CommandRequestSender';
 
 /**
@@ -24,7 +27,7 @@ export class CommandEmitter {
         const url = `${this.endpoint}/${commandName}`;
         const commandWithAV = this.ambiantValues.merge(command);
         const response = this.sender.send(url, commandWithAV);
-        return Observable.from(response);
+        return Observable.fromPromise(response);
     }
 }
 

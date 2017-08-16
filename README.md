@@ -8,7 +8,7 @@ The JavaScript client for [crs](https://github.com/Invenietis/crs)
 
 ## Usage
 
-### ES2015
+### ESNext
 
 ```javascript
 import { CrsEndpoint, Command } from 'crs-client';
@@ -68,7 +68,10 @@ var emitter = endpoint.emitter;
 endpoint.connect();
 
 // send the command
-emitter.emit(new SuperCmd('hello world!'));
+emitter.emit(new SuperCmd('hello world!'))
+    .subscribe(response => {
+        console.log(response);
+    });
 ```
 
 *Note that crs-client use fetch to make xhr requests. You may need a pollyfill for older browser*

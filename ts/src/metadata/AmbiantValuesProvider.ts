@@ -11,6 +11,7 @@ export class AmbiantValuesProvider {
     setValues(values) {
         this._values = values;
     }
+
     merge(obj: any): any {
         return {...obj, ...this.values};
     }
