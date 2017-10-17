@@ -53,7 +53,7 @@ The script will add the ```Crs``` object on the ```window``` object.
 
 ```javascript
 // Specify the command name. 
-Crs.Command('supercommand')(SuperCmd)
+Crs.Command('CK.Crs.Samples.Commands-CK.Crs.Samples.Messages.SyncCommand')(SuperCmd)
 function SuperCmd(hello) {
     this.hello = hello;
 }

@@ -11,14 +11,15 @@
   ],
   "scripts": {
     "tsc": "tsc",
-    "bundle": "cross-env EXCLUDE_RX=1 webpack --profile --bail",
-    "bundle:observable": "webpack --profile --bail",
-    "build": "npm run tsc && npm run bundle && npm run bundle:observable"
+    "bundle": "webpack --profile --bail",
+    "build": "npm run tsc && npm run bundle"
   },
   "peerDependencies": {
     "rxjs": "^5.0.0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@aspnet/signalr-client": "^1.0.0-alpha2-final"
+  },
   "devDependencies": {
     "concurrently": "^3.5.0",
     "cross-env": "^5.0.1",

@@ -20,6 +20,7 @@ export interface CommandMetadata {
 export interface EndpointMetadata {
     version: number;
     ambientValues?: {[ambiantValue: string]: any };
+    callerIdPropertyName: string;
     commands?: {[commandName: string]: CommandMetadata};
 }
 

@@ -6,13 +6,12 @@ export enum ConnectionStatus {
 export interface SocketConnection {
     readonly connectionId: string;
     readonly status: ConnectionStatus;
-    
-    onConnected(callback: (e: any) => void);
-    onDisconnected(callback: (e: any) => void);
-    onMessage(callback: (data: any) => void);
 
-    send(data: any);
-    
+    onConnected(callback: () => void);
+    onDisconnected(callback: () => void);
+    onResult(callback: (data: any) => void);
+    getResultFor(commandId: string): Promise<any>;
+
     open();
     close();
 }

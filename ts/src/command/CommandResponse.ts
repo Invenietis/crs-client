@@ -1,18 +1,21 @@
 export interface CommandResponse<T> {
-    requestId: string;
+    commandId: string;
     responseType: ResponseType;
     payload: T
 }
 
+export interface AsynchronousCommandReponse<T> extends CommandResponse<Promise<T>> {
+}
+
 export enum ResponseType {
-     /**
-      * This is a returned when validation failed on a command (Filtering step).
-      */
+    /**
+     * This is a returned when validation failed on a command (Filtering step).
+     */
     ValidationError = 'V',
-     /**
-      * This is a returnd when an error has been raised by the execution of the command, in the command handler. (Execution step).
-      */
-    InternalErrorResponseType ='I',
+    /**
+     * This is a returnd when an error has been raised by the execution of the command, in the command handler. (Execution step).
+     */
+    InternalErrorResponseType = 'I',
     /**
      * This is returned when the command has successfuly been executed in a synchronous-way, and a result is directly accessible by the client.
      */

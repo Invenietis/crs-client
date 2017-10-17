@@ -1,10 +1,10 @@
 import {
-EventReceiver,
-SocketConnection
+    SignalRConnection,
+    SocketConnection
 } from './event';
 import {
-    CommandEmitterSubscriber,
     CommandEmitter,
+    CommandEmitterProxy,
     FetchCommandSender
 } from './command';
 import {
@@ -24,54 +24,61 @@ export class CrsEndpoint {
     metadata: EndpointMetadata;
     readonly endpoint: string;
     private ambiantValuesProvider: AmbiantValuesProvider;
-    private _emitter: CommandEmitterSubscriber;
-    private _receiver: EventReceiver;
-    
+    private _emitter: CommandEmitterProxy;
+    private _connection: SocketConnection;
+    private _cmdSender: FetchCommandSender;
+
     constructor(endpoint: string)
     constructor(endpoint: string, connection: SocketConnection)
     constructor(endpoint: string, connection?: SocketConnection) {
         this.endpoint = endpoint;
         this.ambiantValuesProvider = new AmbiantValuesProvider();
         if (connection) {
-            this._receiver = new EventReceiver(connection);
+            this._connection = connection;
+        } else {
+            this._connection = new SignalRConnection('/crs');
         }
-
-        this._emitter = new CommandEmitterSubscriber(
+        this._cmdSender =  new FetchCommandSender();
+        this._emitter = new CommandEmitterProxy(
             this.endpoint,
-            new FetchCommandSender(),
+            this._cmdSender,
             this.ambiantValuesProvider,
-            this._receiver
+            this._connection
         );
     }
 
     connect(): Promise<void> {
         const reader = new FetchMetadataReader();
-        
-        return reader.read(this.endpoint)
-            .then( resp => { 
-                this.metadata = resp.payload;
-                this.ambiantValuesProvider.setValues(this.metadata.ambientValues);
-                this._emitter.ready();
-            })
+        let socketCnx = Promise.resolve();
+        if (this._connection) {
+            socketCnx = this._connection.open();
+        }
+
+        return Promise.all([
+            socketCnx,
+            reader.read(this.endpoint)
+                .then(resp => {
+                    this.metadata = resp.payload;
+                    this.ambiantValuesProvider.setValues(this.metadata.ambientValues);
+                    this._cmdSender.setConnectionIdPropertyName(this.metadata.callerIdPropertyName);
+                    this._emitter.ready();
+                })])
+            .then(_ => undefined);
     }
 
     get emitter(): CommandEmitter {
         return this._emitter;
     }
-    
+
     get version(): number {
         return this.metadata ? this.metadata.version : undefined;
     }
 
-    get ambientValues(): {[ambiantValue: string]: any} {
+    get ambientValues(): { [ambiantValue: string]: any } {
         return this.metadata ? this.metadata.ambientValues : undefined;
     }
 
     get isConnected(): boolean {
         return !!this.metadata;
     }
-
-    // get events(): EventReceiver {
-    //     return this._receiver;
-    // }
 }
