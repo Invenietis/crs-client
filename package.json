@@ -14,16 +14,12 @@
     "bundle": "webpack --profile --bail",
     "build": "npm run tsc && npm run bundle"
   },
-  "peerDependencies": {
-    "rxjs": "^5.0.0"
-  },
   "dependencies": {
     "@aspnet/signalr-client": "^1.0.0-alpha2-final"
   },
   "devDependencies": {
     "concurrently": "^3.5.0",
     "cross-env": "^5.0.1",
-    "rxjs": "^5.4.2",
     "awesome-typescript-loader": "^3.2.1",
     "typescript": "~2.4.1",
     "webpack": "~3.1.0"

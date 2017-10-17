@@ -1,7 +1,6 @@
 <html>
 
 <head>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.4.3/Rx.min.js"></script>
     <script src="dist/crs-client.js"></script>
 </head>
 
@@ -17,7 +16,7 @@
         var emitter = endpoint.emitter;
         endpoint.connect();
 
-        emitter.emit(new SuperCmd('hello world!')).subscribe(r => console.log(r));
+        emitter.emit(new SuperCmd('hello world!')).then(r => console.log(r));
     </script>
 </body>
 
