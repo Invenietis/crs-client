@@ -32,21 +32,18 @@ endpoint.connect();
 
 // send the command
 emitter.emit(new SuperCommand('hello world!'))
-    .subscribe(response => {
+    .then(response => {
         console.log(response);
     });
 ```
 
 ### ES5 in browser
 
-First, include the library in your HTML
+First, include the library ```crs-client.js``` in your HTML
 
-Use the ```crs-client.js``` only if you already have [rxjs](https://github.com/ReactiveX/rxjs) or rxjs/observable included.
-
-If not, include the  ```crs-client-observable.js``` release.
 
 ```javascript
-<script src="crs-client-observable.js"></script>
+<script src="crs-client.js"></script>
 ```
 
 The script will add the ```Crs``` object on the ```window``` object.
@@ -69,7 +66,7 @@ endpoint.connect();
 
 // send the command
 emitter.emit(new SuperCmd('hello world!'))
-    .subscribe(response => {
+    .then(response => {
         console.log(response);
     });
 ```
