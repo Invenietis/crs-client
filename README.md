@@ -58,17 +58,12 @@ function SuperCmd(hello) {
 // create a new endpoint
 var endpoint = new Crs.CrsEndpoint('{server url}/{crs endpoint}');
 
-// get the command emitter for the endpoint
-var emitter = endpoint.emitter;
-
 // initialize the endpoint
 endpoint.connect();
 
 // send the command
-emitter.emit(new SuperCmd('hello world!'))
-    .then(response => {
-        console.log(response);
-    });
+const response = await endpoint.send(new SuperCmd('hello world!'));
+
 ```
 
 *Note that crs-client use fetch to make xhr requests. You may need a pollyfill for older browser*

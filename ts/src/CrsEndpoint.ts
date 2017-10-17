@@ -5,7 +5,9 @@ import {
 import {
     CommandEmitter,
     CommandEmitterProxy,
-    FetchCommandSender
+    FetchCommandSender,
+    ResponseType,
+    CommandResponse
 } from './command';
 import {
     EndpointMetadata,
@@ -38,7 +40,7 @@ export class CrsEndpoint {
         } else {
             this._connection = new SignalRConnection('/crs');
         }
-        this._cmdSender =  new FetchCommandSender();
+        this._cmdSender = new FetchCommandSender();
         this._emitter = new CommandEmitterProxy(
             this.endpoint,
             this._cmdSender,
@@ -56,7 +58,7 @@ export class CrsEndpoint {
 
         return Promise.all([
             socketCnx,
-            reader.read(this.endpoint)
+            reader.read(this.endpoint, true)
                 .then(resp => {
                     this.metadata = resp.payload;
                     this.ambiantValuesProvider.setValues(this.metadata.ambientValues);
@@ -64,6 +66,11 @@ export class CrsEndpoint {
                     this._emitter.ready();
                 })])
             .then(_ => undefined);
+    }
+
+    send<T>(command: Object): Promise<T> {
+        return this.emitter.emit<T>(command)
+            .then(resp => resp.payload);
     }
 
     get emitter(): CommandEmitter {
