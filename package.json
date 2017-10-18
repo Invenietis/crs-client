@@ -10,17 +10,33 @@
     "bundling"
   ],
   "scripts": {
+    "test": "npm run tsc & mocha ./test/*.spec.js",
     "tsc": "tsc",
+    "tsc:w": "tsc -w",
     "bundle": "webpack --profile --bail",
     "build": "npm run tsc && npm run bundle"
+  },
+  "nyc": {
+    "reporter": [
+      "html"
+    ],
+    "all": true
   },
   "dependencies": {
     "@aspnet/signalr-client": "^1.0.0-alpha2-final"
   },
   "devDependencies": {
+    "@types/chai": "^4.0.4",
+    "@types/chai-as-promised": "^7.1.0",
+    "@types/mocha": "^2.2.43",
+    "awesome-typescript-loader": "^3.2.1",
+    "chai": "^4.1.2",
+    "chai-as-promised": "^7.1.1",
     "concurrently": "^3.5.0",
     "cross-env": "^5.0.1",
-    "awesome-typescript-loader": "^3.2.1",
+    "mocha": "^4.0.1",
+    "nyc": "^11.2.1",
+    "ts-node": "^3.3.0",
     "typescript": "~2.4.1",
     "webpack": "~3.1.0"
   },

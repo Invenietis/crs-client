@@ -6,3 +6,5 @@
 /index.d.ts
 /index.js
 /index.js.map
+/.nyc_output/
+/coverage/

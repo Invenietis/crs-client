@@ -1,6 +1,7 @@
 import { CommandResponse } from './CommandResponse';
 export interface CommandRequestSender {
     send: (url: string, body: any, connectionId?: string) => Promise<CommandResponse<any>>;
+    setConnectionIdPropertyName(queryString: string);
 }
 const serialize = function (obj) {
     const str = [];
