@@ -17,7 +17,9 @@
             "es2017"
         ]
     },
+
     "exclude": [
+        "ts/test/**/*.ts",
         "node_modules",
         "src",
         "v1"
