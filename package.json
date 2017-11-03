@@ -1,6 +1,6 @@
 {
   "name": "crs-client",
-  "version": "2.0.0-alpha.1",
+  "version": "2.0.0-alpha.5",
   "main": "src/index.js",
   "description": "",
   "directories": {
@@ -14,6 +14,7 @@
     "tsc": "tsc",
     "tsc:w": "tsc -w",
     "bundle": "webpack --profile --bail",
+    "prepublish": "npm run build",
     "build": "npm run tsc && npm run bundle"
   },
   "nyc": {
@@ -23,7 +24,8 @@
     "all": true
   },
   "dependencies": {
-    "@aspnet/signalr-client": "^1.0.0-alpha2-final"
+    "@aspnet/signalr-client": "^1.0.0-alpha2-final",
+    "axios": "^0.17.0"
   },
   "devDependencies": {
     "@types/chai": "^4.0.4",

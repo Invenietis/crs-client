@@ -39,7 +39,7 @@ export class CrsEndpoint {
         if (connection) {
             this._connection = connection;
         } else {
-            this._connection = new SignalRConnection('/crs');
+            this._connection = new SignalRConnection(endpoint);
         }
         this._cmdSender = new FetchCommandSender();
         this._emitter = new CommandEmitterProxy(
