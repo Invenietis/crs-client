@@ -24,8 +24,8 @@ export class CommandEmitter {
         const commandName = readCommandName(command);
         const url = `${this.endpoint}/${commandName}`;
         const commandWithAV = this.ambiantValues.merge(command);
-
-        return this.sender.send(url, commandWithAV, this._socket ? this._socket.connectionId : undefined)
+        const connectionId = this._socket && this._socket.connectionId ? this._socket.connectionId : new Date().getTime().toString();
+        return this.sender.send(url, commandWithAV, connectionId)
             .then(response => {
                 if (response.responseType === ResponseType.Asynchronous) {
                     if (this._socket) {
