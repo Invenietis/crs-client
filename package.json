@@ -14,7 +14,7 @@
     "tsc": "tsc",
     "tsc:w": "tsc -w",
     "bundle": "webpack --profile --bail",
-    "prepublish": "npm run build",
+    "prepublish": "npm run build & npm version prerelease",
     "build": "npm run tsc && npm run bundle"
   },
   "nyc": {
