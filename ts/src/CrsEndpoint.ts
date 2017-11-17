@@ -59,7 +59,10 @@ export class CrsEndpoint {
 
         return Promise.all([
             socketCnx,
-            reader.read(this.endpoint, true)
+            reader.read(this.endpoint, {
+                showAmbientValues: true,
+                showCommands: true
+            })
                 .then(resp => {
                     this.metadata = resp.payload;
                     this.ambiantValuesProvider.setValues(this.metadata.ambientValues);
