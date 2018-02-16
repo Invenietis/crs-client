@@ -14,7 +14,7 @@
     "tsc": "tsc",
     "tsc:w": "tsc -w",
     "bundle": "webpack --profile --bail",
-    "prepublish": "npm run build & npm version prerelease",
+    "build:prerelease": "npm run build & npm version prerelease",
     "build": "npm run tsc && npm run bundle"
   },
   "nyc": {
@@ -24,7 +24,7 @@
     "all": true
   },
   "dependencies": {
-    "@aspnet/signalr-client": "^1.0.0-alpha2-final",
+    "@aspnet/signalr-client": "1.0.0-alpha2-final",
     "axios": "^0.17.0"
   },
   "devDependencies": {
@@ -33,14 +33,14 @@
     "@types/mocha": "^2.2.43",
     "awesome-typescript-loader": "^3.2.1",
     "chai": "^4.1.2",
-    "chai-as-promised": "^7.1.1",
-    "concurrently": "^3.5.0",
-    "cross-env": "^5.0.1",
-    "mocha": "^4.0.1",
-    "nyc": "^11.2.1",
-    "ts-node": "^3.3.0",
-    "typescript": "~2.4.1",
-    "webpack": "~3.1.0"
+    "chai-as-promised": "~7.1.1",
+    "concurrently": "~3.5.0",
+    "cross-env": "~5.1.3",
+    "mocha": "~5.0.1",
+    "nyc": "~11.4.1",
+    "ts-node": "~4.1.0",
+    "typescript": "~2.7.2",
+    "webpack": "~3.11.0"
   },
   "author": "",
   "license": "ISC"
