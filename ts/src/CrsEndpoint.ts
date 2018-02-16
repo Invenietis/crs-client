@@ -13,8 +13,14 @@ import {
     EndpointMetadata,
     AmbiantValuesProvider,
     MetadataReader,
-    FetchMetadataReader
+    FetchMetadataReader,
+    MetadataOptions,
+    defaultMetadataOptions
 } from './metadata';
+
+export class CrsEndpointConfiguration {
+    metadata: MetadataOptions;
+}
 
 /**
  * Wrap a crs endpoint connection.
@@ -30,10 +36,12 @@ export class CrsEndpoint {
     private _emitter: CommandEmitterProxy;
     private _connection: SocketConnection;
     private _cmdSender: FetchCommandSender;
+    private _configuration: CrsEndpointConfiguration;
 
     constructor(endpoint: string)
     constructor(endpoint: string, connection: SocketConnection)
-    constructor(endpoint: string, connection?: SocketConnection) {
+    constructor(endpoint: string, connection: SocketConnection, config: CrsEndpointConfiguration)
+    constructor(endpoint: string, connection?: SocketConnection, config?: CrsEndpointConfiguration) {
         this.endpoint = endpoint;
         this.ambiantValuesProvider = new AmbiantValuesProvider();
         if (connection) {
@@ -48,6 +56,10 @@ export class CrsEndpoint {
             this.ambiantValuesProvider,
             this._connection
         );
+        this._configuration = {
+            metadata: { ...defaultMetadataOptions },
+            ...config
+        };
     }
 
     connect(): Promise<void> {
@@ -59,16 +71,12 @@ export class CrsEndpoint {
 
         return Promise.all([
             socketCnx,
-            reader.read(this.endpoint, {
-                showAmbientValues: true,
-                showCommands: true
-            })
-                .then(resp => {
-                    this.metadata = resp.payload;
-                    this.ambiantValuesProvider.setValues(this.metadata.ambientValues);
-                    this._cmdSender.setConnectionIdPropertyName(this.metadata.callerIdPropertyName);
-                    this._emitter.ready();
-                })])
+            reader.read(this.endpoint, this._configuration.metadata).then(resp => {
+                this.metadata = resp.payload;
+                this.ambiantValuesProvider.setValues(this.metadata.ambientValues);
+                this._cmdSender.setConnectionIdPropertyName(this.metadata.callerIdPropertyName);
+                this._emitter.ready();
+            })])
             .then(_ => undefined);
     }
 

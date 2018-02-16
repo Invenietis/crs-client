@@ -10,14 +10,14 @@ export interface MetadataOptions {
     showAmbientValues: boolean;
 }
 
-const defaultOptions: MetadataOptions = {
+export const defaultMetadataOptions: MetadataOptions = {
     showAmbientValues: true,
     showCommands: false
 };
 
 export class FetchMetadataReader implements MetadataReader {
-    read(endpoint: string, options: MetadataOptions = defaultOptions): Promise<EndpointMetadataResponse> {
+    read(endpoint: string, options: MetadataOptions = defaultMetadataOptions): Promise<EndpointMetadataResponse> {
         const url = `${endpoint}/${MetadataPath}`;
-        return http.post(url, defaultOptions).then(resp => resp.data);
+        return http.post(url, options).then(resp => resp.data);
     }
 }
