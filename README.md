@@ -1,19 +1,19 @@
 # crs-client
 
-The JavaScript client for [crs](https://github.com/Invenietis/crs)
+The JavaScript client library for [crs](https://github.com/Invenietis/crs)
 
 ## Installaion
 
-> npm install crs-client
+> npm install crs-client --save
 
 ## Usage
 
-### ESNext
+### Typescript / ESNext
 
 ```javascript
 import { CrsEndpoint, Command } from 'crs-client';
 
-// Specify the command name. 
+// Create a command class and bound to a CRS commmand
 @Command('supercommand')
 class SuperCommand {
     constructor(hello) {
@@ -21,17 +21,15 @@ class SuperCommand {
     }
 }
 
-// create a new endpoint
+// create a new endpoint where {server url} is your server URL (empty is same origin) 
+// and {crs endpoint} is the path to the CRS endpoint
 const endpoint = new CrsEndpoint('{server url}/{crs endpoint}');
-
-// get the command emitter for the endpoint
-const emitter = endpoint.emitter;
 
 // initialize the endpoint
 endpoint.connect();
 
 // send the command
-emitter.emit(new SuperCommand('hello world!'))
+emitter.send(new SuperCommand('hello world!'))
     .then(response => {
         console.log(response);
     });
@@ -50,7 +48,7 @@ The script will add the ```Crs``` object on the ```window``` object.
 
 ```javascript
 // Specify the command name. 
-Crs.Command('CK.Crs.Samples.Commands-CK.Crs.Samples.Messages.SyncCommand')(SuperCmd)
+Crs.Command('supercommand')(SuperCmd)
 function SuperCmd(hello) {
     this.hello = hello;
 }
@@ -63,7 +61,4 @@ endpoint.connect();
 
 // send the command
 const response = await endpoint.send(new SuperCmd('hello world!'));
-
 ```
-
-*Note that crs-client use fetch to make xhr requests. You may need a pollyfill for older browser*
