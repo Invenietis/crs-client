@@ -5,7 +5,8 @@ import { CommandRequestSender } from './CommandRequestSender';
 import { SocketConnection } from '../event/SocketConnection';
 
 /**
- * Base class to emit commands
+ * Base class to emit CRS commands.
+ * Each emitted command must be an instance of a class decorated by the {Command} decorator
  */
 export class CommandEmitter {
     readonly endpoint: string;
@@ -20,6 +21,11 @@ export class CommandEmitter {
         this._socket = socket;
     }
 
+    /**
+     * Send the command to the configurated endpoint
+     * @param command The command to send. Must be an instance of a class decorated with the {Command} decorator
+     * @returns {Promise<CommandResponse>>}
+     */
     emit<T>(command: Object): Promise<CommandResponse<T>> {
         const commandName = readCommandName(command);
         const url = `${this.endpoint}/${commandName}`;
@@ -64,6 +70,9 @@ export class CommandEmitterProxy extends CommandEmitter {
         super(endpoint, requestSender, ambiantValues, socket);
     }
 
+    /**
+     * Notify the emitter that its endpoint is connected. Will send all the pending commands
+    */
     ready() {
         this.pendingCommands.forEach(pending => {
             super.emit<any>(pending.command)
@@ -75,6 +84,11 @@ export class CommandEmitterProxy extends CommandEmitter {
         this.isReady = true;
     }
 
+    /**
+     * Emit the command to the configurated endpoint when connected
+     * @param command The command to send
+     * @returns {Promise<CommandResponse>>}
+     */
     emit<T>(command: Object): Promise<CommandResponse<T>> {
         if (this.isReady) {
             return super.emit(command);

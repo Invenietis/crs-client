@@ -5,6 +5,7 @@ export interface CommandRequestSender {
     send: (url: string, body: any, connectionId?: string) => Promise<CommandResponse<any>>;
     setConnectionIdPropertyName(queryString: string);
 }
+
 const serialize = function (obj) {
     const str = [];
     for (let p in obj)
@@ -15,7 +16,10 @@ const serialize = function (obj) {
     return str.join("&");
 }
 
-export class FetchCommandSender implements CommandRequestSender {
+/** 
+ * Send the command through HTTP using [axios](https://github.com/axios/axios)
+*/
+export class AxiosCommandSender implements CommandRequestSender {
     private _connectionIdPropertyName: string;
 
     send(url: string, body: any, connectionId: string): Promise<CommandResponse<any>> {

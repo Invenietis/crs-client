@@ -5,7 +5,7 @@ import {
 import {
     CommandEmitter,
     CommandEmitterProxy,
-    FetchCommandSender,
+    AxiosCommandSender,
     ResponseType,
     CommandResponse
 } from './command';
@@ -18,8 +18,21 @@ import {
     defaultMetadataOptions
 } from './metadata';
 
+
 export class CrsEndpointConfiguration {
-    metadata: MetadataOptions;
+    /**
+     * The path to the CRS WebSocket if needed
+     */
+    wsPath: string;
+
+    /**
+     * Use the SignalR connection. If true, must be configured on the remote CRS
+     */
+    useSignalR?: boolean;
+    /**
+     * Options for the retrived endpoint metadata
+     */
+    metadata?: MetadataOptions;
 }
 
 /**
@@ -35,33 +48,34 @@ export class CrsEndpoint {
     private ambiantValuesProvider: AmbiantValuesProvider;
     private _emitter: CommandEmitterProxy;
     private _connection: SocketConnection;
-    private _cmdSender: FetchCommandSender;
+    private _cmdSender: AxiosCommandSender;
     private _configuration: CrsEndpointConfiguration;
 
     constructor(endpoint: string)
-    constructor(endpoint: string, connection: SocketConnection)
-    constructor(endpoint: string, connection: SocketConnection, config: CrsEndpointConfiguration)
-    constructor(endpoint: string, connection?: SocketConnection, config?: CrsEndpointConfiguration) {
+    constructor(endpoint: string, config: CrsEndpointConfiguration)
+    constructor(endpoint: string, config?: CrsEndpointConfiguration) {
         this.endpoint = endpoint;
+        this._configuration = {
+            wsPath: 'crs',
+            metadata: { ...defaultMetadataOptions },
+            ...config
+        };
         this.ambiantValuesProvider = new AmbiantValuesProvider();
-        if (connection) {
-            this._connection = connection;
-        } else {
-            this._connection = new SignalRConnection(endpoint);
+        if (this._configuration.useSignalR) {
+            this._connection = new SignalRConnection(this._configuration.wsPath);
         }
-        this._cmdSender = new FetchCommandSender();
+        this._cmdSender = new AxiosCommandSender();
         this._emitter = new CommandEmitterProxy(
             this.endpoint,
             this._cmdSender,
             this.ambiantValuesProvider,
             this._connection
         );
-        this._configuration = {
-            metadata: { ...defaultMetadataOptions },
-            ...config
-        };
     }
 
+    /**
+     * Initialize the endpoint connection
+     */
     connect(): Promise<void> {
         const reader = new FetchMetadataReader();
         let socketCnx = Promise.resolve();
@@ -80,23 +94,40 @@ export class CrsEndpoint {
             .then(_ => undefined);
     }
 
+    /**
+     * Send a command through the endpoint
+     * @param command The command to send
+     */
     send<T>(command: Object): Promise<T> {
         return this.emitter.emit<T>(command)
             .then(resp => resp.payload);
     }
 
+    /**
+     * The endpoint {CommandEmitter}
+     * @returns {CommandEmitter}
+     */
     get emitter(): CommandEmitter {
         return this._emitter;
     }
 
+    /**
+     * Get the endpoint version
+     */
     get version(): number {
         return this.metadata ? this.metadata.version : undefined;
     }
 
+    /**
+     * Get the endpoint configured ambient values
+     */
     get ambientValues(): { [ambiantValue: string]: any } {
         return this.metadata ? this.metadata.ambientValues : undefined;
     }
 
+    /**
+     * True when the connection is successfull. Will always be false if the connected method is not called
+     */
     get isConnected(): boolean {
         return !!this.metadata;
     }

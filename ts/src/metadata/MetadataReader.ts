@@ -6,7 +6,13 @@ export interface MetadataReader {
 }
 
 export interface MetadataOptions {
+    /**
+     * Get the command list from the metadata
+    */
     showCommands: boolean;
+    /**
+     * Get the configured ambient values
+    */
     showAmbientValues: boolean;
 }
 
