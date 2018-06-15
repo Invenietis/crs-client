@@ -1,5 +1,5 @@
 {
-  "name": "crs-client",
+  "name": "@signature/crs-client",
   "version": "3.0.0-alpha.1",
   "main": "src/index.js",
   "description": "SignalR client for CK-Crs",
