@@ -1,4 +1,4 @@
-import { HubConnection } from "@aspnet/signalr-client";
+import { HubConnection, HubConnectionBuilder, LogLevel } from "@aspnet/signalr";
 import { SocketConnection, ConnectionStatus } from "./SocketConnection";
 
 export class SignalRConnection implements SocketConnection {
@@ -8,7 +8,10 @@ export class SignalRConnection implements SocketConnection {
     private _connectionId: string;
 
     constructor(path: string) {
-        this._connection = new HubConnection(path);
+        this._connection = new HubConnectionBuilder()
+            .withUrl(path)
+            .configureLogging(LogLevel.Information)
+            .build();
         this._connection.onclose(() => {
             this._connectionId = null;
             this._onDisconnectedCbs.forEach(cb => cb());

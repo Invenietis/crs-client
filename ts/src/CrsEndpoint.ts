@@ -56,7 +56,7 @@ export class CrsEndpoint {
     constructor(endpoint: string, config?: CrsEndpointConfiguration) {
         this.endpoint = endpoint;
         this._configuration = {
-            wsPath: 'crs',
+            wsPath: '/crs',
             metadata: { ...defaultMetadataOptions },
             ...config
         };
