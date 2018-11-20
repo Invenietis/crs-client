@@ -1,51 +1,53 @@
 {
-  "name": "@signature/crs-client",
-  "version": "3.0.0-alpha.1",
-  "main": "src/index.js",
-  "description": "SignalR client for CK-Crs",
-  "directories": {
-    "test": "test"
-  },
-  "exclude": [
-    "bundling"
-  ],
-  "scripts": {
-    "typedoc": "typedoc",
-    "test": "npm run tsc & mocha ./test/*.spec.js",
-    "tsc": "tsc",
-    "tsc:w": "tsc -w",
-    "bundle": "webpack --mode=production --profile --bail",
-    "build:prerelease": "npm run build & npm version prerelease",
-    "build": "npm run tsc && npm run bundle",
-    "doc": "npm run typedoc -- --out doc ts/index.ts --mode file"
-  },
-  "nyc": {
-    "reporter": [
-      "html"
+    "name": "@signature/crs-client",
+    "version": "3.0.0-alpha.1",
+    "main": "src/index.js",
+    "description": "SignalR client for CK-Crs",
+    "directories": {
+        "test": "test"
+    },
+    "exclude": [
+        "bundling"
     ],
-    "all": true
-  },
-  "dependencies": {
-    "@aspnet/signalr": "^1.0.0",
-    "axios": "^0.18.0"
-  },
-  "devDependencies": {
-    "@types/chai": "^4.1.4",
-    "@types/chai-as-promised": "^7.1.0",
-    "@types/mocha": "^5.2.2",
-    "awesome-typescript-loader": "^5.0.0",
-    "chai": "^4.1.2",
-    "chai-as-promised": "~7.1.1",
-    "concurrently": "~3.5.1",
-    "cross-env": "~5.2.0",
-    "mocha": "~5.2.0",
-    "nyc": "~12.0.2",
-    "ts-node": "~6.1.1",
-    "typedoc": "^0.11.1",
-    "typescript": "~2.9.2",
-    "webpack": "~4.12.0",
-    "webpack-cli": "^3.0.6"
-  },
-  "author": "",
-  "license": "ISC"
+    "scripts": {
+        "typedoc": "typedoc",
+        "test": "npm run tsc & mocha ./test/*.spec.js",
+        "tsc": "tsc",
+        "tsc:w": "tsc -w",
+        "bundle": "webpack --mode=production --profile --bail",
+        "build:prerelease": "npm run build & npm version prerelease",
+        "build": "npm run tsc && npm run bundle",
+        "doc": "npm run typedoc -- --out doc ts/index.ts --mode file"
+    },
+    "nyc": {
+        "reporter": [
+            "html"
+        ],
+        "all": true
+    },
+    "peerDependencies": {
+        "@aspnet/signalr": "1.0.x",
+        "axios": "0.x"
+    },
+    "devDependencies": {
+        "@types/chai": "^4.1.4",
+        "@types/chai-as-promised": "^7.1.0",
+        "@types/mocha": "^5.2.5",
+        "awesome-typescript-loader": "^5.2.1",
+        "@aspnet/signalr": "1.0.x",
+        "axios": "0.18.0",
+        "chai": "^4.1.2",
+        "chai-as-promised": "~7.1.1",
+        "concurrently": "~3.5.1",
+        "cross-env": "~5.2.0",
+        "mocha": "~5.2.0",
+        "nyc": "~12.0.2",
+        "ts-node": "~6.1.1",
+        "typedoc": "^0.11.1",
+        "typescript": "~2.9.2",
+        "webpack": "~4.12.0",
+        "webpack-cli": "^3.0.6"
+    },
+    "author": "",
+    "license": "ISC"
 }
