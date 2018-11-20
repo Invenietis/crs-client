@@ -6,21 +6,24 @@ import {
     CommandEmitter,
     CommandEmitterProxy,
     AxiosCommandSender,
-    ResponseType,
-    CommandResponse
 } from './command';
 import {
     EndpointMetadata,
     AmbiantValuesProvider,
-    MetadataReader,
     FetchMetadataReader,
     MetadataOptions,
     defaultMetadataOptions
 } from './metadata';
+import http, { AxiosInstance } from 'axios';
 
 const DEFAULT_WS_PATH = 'crs';
 
 export class CrsEndpointConfiguration {
+    /**
+     * Override the default Axios instance used by the {@link AxiosCommandSender}
+     * @see https://github.com/axios/axios#creating-an-instance
+     */
+    axiosInstance?: AxiosInstance;
     /**
      * The path to the CRS WebSocket if needed
      */
@@ -30,6 +33,7 @@ export class CrsEndpointConfiguration {
      * Use the SignalR connection. If true, must be configured on the remote CRS
      */
     useSignalR?: boolean;
+
     /**
      * Options for the retrived endpoint metadata
      */
@@ -66,7 +70,7 @@ export class CrsEndpoint {
         if (this._configuration.useSignalR) {
             this._connection = new SignalRConnection(this._configuration.wsPath);
         }
-        this._cmdSender = new AxiosCommandSender();
+        this._cmdSender = new AxiosCommandSender(this._configuration.axiosInstance ? this._configuration.axiosInstance : http);
         this._emitter = new CommandEmitterProxy(
             this.endpoint,
             this._cmdSender,

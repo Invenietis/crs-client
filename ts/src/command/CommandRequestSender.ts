@@ -1,5 +1,5 @@
 import { CommandResponse } from './CommandResponse';
-import http from 'axios';
+import { AxiosInstance } from 'axios';
 
 export interface CommandRequestSender {
     send: (url: string, body: any, connectionId?: string) => Promise<CommandResponse<any>>;
@@ -22,12 +22,17 @@ const serialize = function (obj) {
 export class AxiosCommandSender implements CommandRequestSender {
     private _connectionIdPropertyName: string;
 
+    constructor(
+        private _axios: AxiosInstance
+    ) {
+    }
+
     send(url: string, body: any, connectionId: string): Promise<CommandResponse<any>> {
         const query = {
             [this._connectionIdPropertyName]: connectionId
         };
 
-        return http.post(`${url}?${serialize(query)}`, body).then(resp => resp.data);
+        return this._axios.post(`${url}?${serialize(query)}`, body).then(resp => resp.data);
     }
 
     setConnectionIdPropertyName(queryString: string) {
