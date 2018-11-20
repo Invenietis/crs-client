@@ -24,11 +24,11 @@ export class CrsEndpointConfiguration {
      * @see https://github.com/axios/axios#creating-an-instance
      */
     axiosInstance?: AxiosInstance;
-    
+
     /**
      * The url to the CRS endpoint if needed
      */
-    url?: string;
+    wsUrl?: string;
 
     /**
      * Use the SignalR connection. If true, must be configured on the remote CRS
@@ -63,13 +63,13 @@ export class CrsEndpoint {
     constructor(endpoint: string, config?: CrsEndpointConfiguration) {
         this.endpoint = endpoint;
         this._configuration = {
-            url: `/${DEFAULT_WS_PATH}`,
+            wsUrl: `/${DEFAULT_WS_PATH}`,
             metadata: { ...defaultMetadataOptions },
             ...config
         };
         this.ambiantValuesProvider = new AmbiantValuesProvider();
         if (this._configuration.useSignalR) {
-            this._connection = new SignalRConnection(this._configuration.url);
+            this._connection = new SignalRConnection(this._configuration.wsUrl);
         }
         this._cmdSender = new AxiosCommandSender(this._configuration.axiosInstance ? this._configuration.axiosInstance : http);
         this._emitter = new CommandEmitterProxy(
