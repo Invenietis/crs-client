@@ -8,7 +8,7 @@ The JavaScript client library for [crs](https://github.com/Invenietis/crs)
 
 ## Usage
 
-### Typescript / ESNext
+### TypeScript / ESNext
 
 ```javascript
 import { CrsEndpoint, Command } from 'crs-client';
@@ -29,7 +29,7 @@ const endpoint = new CrsEndpoint('{server url}/{crs endpoint}');
 endpoint.connect();
 
 // send the command
-emitter.send(new SuperCommand('hello world!'))
+endpoint.send(new SuperCommand('hello world!'))
     .then(response => {
         console.log(response);
     });
