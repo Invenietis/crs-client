@@ -9,11 +9,11 @@ export interface MetadataOptions {
     /**
      * Get the command list from the metadata
     */
-    showCommands: boolean;
+    showCommands?: boolean;
     /**
      * Get the configured ambient values
     */
-    showAmbientValues: boolean;
+    showAmbientValues?: boolean;
 }
 
 export const defaultMetadataOptions: MetadataOptions = {

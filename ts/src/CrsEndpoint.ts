@@ -18,12 +18,13 @@ import {
     defaultMetadataOptions
 } from './metadata';
 
+const DEFAULT_WS_PATH = 'crs';
 
 export class CrsEndpointConfiguration {
     /**
      * The path to the CRS WebSocket if needed
      */
-    wsPath: string;
+    wsPath?: string;
 
     /**
      * Use the SignalR connection. If true, must be configured on the remote CRS
@@ -37,8 +38,9 @@ export class CrsEndpointConfiguration {
 
 /**
  * Wrap a crs endpoint connection.
- * Provide the crs endpoint metadata, the ambiant values and the {CommandEmitter} for the endpoint.
- * Each new {CrsEndpoint} instance must call the connect method in order to initialize the endpoint.
+ * 
+ * Provide the crs endpoint metadata, the ambiant values and the {@link CommandEmitter} for the endpoint.<br>
+ * Each new  CrsEndpoint instance must call the connect method in order to initialize the endpoint.<br>
  * During the initialization phase, the CrsEndppoint will fetch the endpoint metadata to get information like the ambiant values, 
  * version number, etc. and try to establish a signalR connection
  */
@@ -56,7 +58,7 @@ export class CrsEndpoint {
     constructor(endpoint: string, config?: CrsEndpointConfiguration) {
         this.endpoint = endpoint;
         this._configuration = {
-            wsPath: '/crs',
+            wsPath: `/${DEFAULT_WS_PATH}`,
             metadata: { ...defaultMetadataOptions },
             ...config
         };
