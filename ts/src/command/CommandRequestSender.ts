@@ -2,7 +2,7 @@ import { CommandResponse } from './CommandResponse';
 import { AxiosInstance } from 'axios';
 
 export interface CommandRequestSender {
-    send: (url: string, body: any, connectionId?: string) => Promise<CommandResponse<any>>;
+    send: (url: string, body: any, connectionId: string) => Promise<CommandResponse<any>>;
     setConnectionIdPropertyName(queryString: string);
 }
 

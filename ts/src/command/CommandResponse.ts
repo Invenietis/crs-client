@@ -1,7 +1,7 @@
 export interface CommandResponse<T> {
     commandId: string;
     responseType: ResponseType;
-    payload: T
+    payload?: T
 }
 
 export interface AsynchronousCommandReponse<T> extends CommandResponse<Promise<T>> {
