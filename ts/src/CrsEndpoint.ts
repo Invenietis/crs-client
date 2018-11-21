@@ -1,7 +1,4 @@
 import {
-    SocketConnection
-} from './event/SocketConnection';
-import {
     CommandEmitter,
     CommandEmitterProxy,
     AxiosCommandSender,
@@ -15,24 +12,12 @@ import {
 } from './metadata';
 import http, { AxiosInstance } from 'axios';
 
-const DEFAULT_WS_PATH = 'crs';
-
 export interface CrsEndpointConfiguration {
     /**
      * Override the default Axios instance used by the {@link AxiosCommandSender}
      * @see https://github.com/axios/axios#creating-an-instance
      */
     axiosInstance?: AxiosInstance;
-
-    /**
-     * The url to the CRS endpoint if needed
-     */
-    wsUrl?: string;
-
-    /**
-     * Use the SignalR connection. If true, must be configured on the remote CRS
-     */
-    useSignalR?: boolean;
 
     /**
      * Options for the retrived endpoint metadata
@@ -51,55 +36,41 @@ export interface CrsEndpointConfiguration {
 export class CrsEndpoint {
     metadata: EndpointMetadata;
     readonly endpoint: string;
-    private ambiantValuesProvider: AmbiantValuesProvider;
-    private _emitter: CommandEmitterProxy;
-    private _connection: SocketConnection;
-    private _cmdSender: AxiosCommandSender;
-    private _configuration: CrsEndpointConfiguration;
+    protected ambiantValuesProvider: AmbiantValuesProvider;
+    protected _emitter: CommandEmitterProxy;
+    protected _cmdSender: AxiosCommandSender;
+    protected _configuration: CrsEndpointConfiguration;
 
     constructor(endpoint: string)
     constructor(endpoint: string, config: CrsEndpointConfiguration)
     constructor(endpoint: string, config?: CrsEndpointConfiguration) {
         this.endpoint = endpoint;
         this._configuration = {
-            wsUrl: `/${DEFAULT_WS_PATH}`,
             metadata: { ...defaultMetadataOptions },
             axiosInstance: http,
             ...config
         };
         this.ambiantValuesProvider = new AmbiantValuesProvider();
-        if (this._configuration.useSignalR) {
-            const { SignalRConnection } = require('./event/SignalRConnection');
-            this._connection = new SignalRConnection(this._configuration.wsUrl);
-        }
+
         this._cmdSender = new AxiosCommandSender(this._configuration.axiosInstance);
         this._emitter = new CommandEmitterProxy(
             this.endpoint,
             this._cmdSender,
-            this.ambiantValuesProvider,
-            this._connection
+            this.ambiantValuesProvider
         );
     }
 
     /**
      * Initialize the endpoint connection
      */
-    connect(): Promise<void> {
+    async connect(): Promise<void> {
         const reader = new FetchMetadataReader(this._configuration.axiosInstance);
-        let socketCnx = Promise.resolve();
-        if (this._connection) {
-            socketCnx = this._connection.open();
-        }
+        const resp = await reader.read(this.endpoint, this._configuration.metadata);
 
-        return Promise.all([
-            socketCnx,
-            reader.read(this.endpoint, this._configuration.metadata).then(resp => {
-                this.metadata = resp.payload;
-                this.ambiantValuesProvider.setValues(this.metadata.ambientValues);
-                this._cmdSender.setConnectionIdPropertyName(this.metadata.callerIdPropertyName);
-                this._emitter.ready();
-            })])
-            .then(_ => undefined);
+        this.metadata = resp.payload;
+        this.ambiantValuesProvider.setValues(this.metadata.ambientValues);
+        this._cmdSender.setConnectionIdPropertyName(this.metadata.callerIdPropertyName);
+        this._emitter.ready();
     }
 
     /**
