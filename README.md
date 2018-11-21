@@ -4,7 +4,7 @@ The JavaScript client library for [crs](https://github.com/Invenietis/crs)
 
 ## Installation
 
-> npm install axios crs-client --save
+> npm install axios @signature/crs-client --save
 
 ## Usage
 
