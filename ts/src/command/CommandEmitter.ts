@@ -1,5 +1,5 @@
 import { AmbiantValuesProvider } from '../metadata/AmbiantValuesProvider';
-import { readCommandName, readCommandEvents } from './Command';
+import { readCommandName } from './Command';
 import { CommandResponse, AsynchronousCommandReponse, ResponseType } from './CommandResponse';
 import { CommandRequestSender } from './CommandRequestSender';
 import { SocketConnection } from '../event/SocketConnection';

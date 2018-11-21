@@ -1,7 +1,6 @@
 import {
-    SignalRConnection,
     SocketConnection
-} from './event';
+} from './event/SocketConnection';
 import {
     CommandEmitter,
     CommandEmitterProxy,
@@ -70,6 +69,7 @@ export class CrsEndpoint {
         };
         this.ambiantValuesProvider = new AmbiantValuesProvider();
         if (this._configuration.useSignalR) {
+            const { SignalRConnection } = require('./event/SignalRConnection');
             this._connection = new SignalRConnection(this._configuration.wsUrl);
         }
         this._cmdSender = new AxiosCommandSender(this._configuration.axiosInstance);
