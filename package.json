@@ -16,7 +16,7 @@
         "tsc:w": "tsc -w",
         "bundle": "webpack --mode=production --profile --bail",
         "build:prerelease": "npm run build & npm version prerelease",
-        "build": "npm run tsc && npm run bundle",
+        "build": "npm run tsc && npm run bundle && npm run doc",
         "doc": "npm run typedoc -- --out doc ts/index.ts --mode file"
     },
     "nyc": {
