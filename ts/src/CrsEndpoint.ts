@@ -18,7 +18,7 @@ import http, { AxiosInstance } from 'axios';
 
 const DEFAULT_WS_PATH = 'crs';
 
-export class CrsEndpointConfiguration {
+export interface CrsEndpointConfiguration {
     /**
      * Override the default Axios instance used by the {@link AxiosCommandSender}
      * @see https://github.com/axios/axios#creating-an-instance
@@ -65,13 +65,14 @@ export class CrsEndpoint {
         this._configuration = {
             wsUrl: `/${DEFAULT_WS_PATH}`,
             metadata: { ...defaultMetadataOptions },
+            axiosInstance: http,
             ...config
         };
         this.ambiantValuesProvider = new AmbiantValuesProvider();
         if (this._configuration.useSignalR) {
             this._connection = new SignalRConnection(this._configuration.wsUrl);
         }
-        this._cmdSender = new AxiosCommandSender(this._configuration.axiosInstance ? this._configuration.axiosInstance : http);
+        this._cmdSender = new AxiosCommandSender(this._configuration.axiosInstance);
         this._emitter = new CommandEmitterProxy(
             this.endpoint,
             this._cmdSender,
@@ -84,7 +85,7 @@ export class CrsEndpoint {
      * Initialize the endpoint connection
      */
     connect(): Promise<void> {
-        const reader = new FetchMetadataReader();
+        const reader = new FetchMetadataReader(this._configuration.axiosInstance);
         let socketCnx = Promise.resolve();
         if (this._connection) {
             socketCnx = this._connection.open();
