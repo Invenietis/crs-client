@@ -2,9 +2,9 @@
 
 The JavaScript client library for [crs](https://github.com/Invenietis/crs)
 
-## Installaion
+## Installation
 
-> npm install crs-client --save
+> npm install axios crs-client --save
 
 ## Usage
 
