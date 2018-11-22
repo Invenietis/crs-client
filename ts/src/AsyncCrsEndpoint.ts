@@ -1,6 +1,6 @@
 import { CrsEndpoint, CrsEndpointConfiguration } from './CrsEndpoint';
 import { SocketConnection, SignalRConnection } from './event';
-import { CommandEmitterProxy } from './command';
+import { CommandEmitter } from './command';
 
 export type AsyncConfiguration = {
     wsUrl: string;
@@ -23,7 +23,7 @@ export class AsyncCrsEndpoint extends CrsEndpoint {
         super(endpoint, configuration);
         this.asyncConfig = configuration.async;
         this._connection = new SignalRConnection(this.asyncConfig.wsUrl);
-        this._emitter = new CommandEmitterProxy(
+        this._emitter = new CommandEmitter(
             this.endpoint,
             this._cmdSender,
             this.ambiantValuesProvider,

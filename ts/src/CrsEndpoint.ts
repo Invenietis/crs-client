@@ -1,7 +1,7 @@
 import {
     CommandEmitter,
-    CommandEmitterProxy,
     AxiosCommandSender,
+    CommandResponse,
 } from './command';
 import {
     EndpointMetadata,
@@ -37,9 +37,14 @@ export class CrsEndpoint {
     metadata: EndpointMetadata;
     readonly endpoint: string;
     protected ambiantValuesProvider: AmbiantValuesProvider;
-    protected _emitter: CommandEmitterProxy;
+    protected _emitter: CommandEmitter;
     protected _cmdSender: AxiosCommandSender;
     protected _configuration: CrsEndpointConfiguration;
+    private _pendingCommands: Array<{
+        command: Object,
+        resolver: (response: any) => void,
+        rejector: (error: any) => void
+    }> = [];
 
     constructor(endpoint: string)
     constructor(endpoint: string, config: CrsEndpointConfiguration)
@@ -53,7 +58,7 @@ export class CrsEndpoint {
         this.ambiantValuesProvider = new AmbiantValuesProvider();
 
         this._cmdSender = new AxiosCommandSender(this._configuration.axiosInstance);
-        this._emitter = new CommandEmitterProxy(
+        this._emitter = new CommandEmitter(
             this.endpoint,
             this._cmdSender,
             this.ambiantValuesProvider
@@ -70,7 +75,7 @@ export class CrsEndpoint {
         this.metadata = resp.payload;
         this.ambiantValuesProvider.setValues(this.metadata.ambientValues);
         this._cmdSender.setConnectionIdPropertyName(this.metadata.callerIdPropertyName);
-        this._emitter.ready();
+        this.sendPendingCommands();
     }
 
     /**
@@ -78,8 +83,24 @@ export class CrsEndpoint {
      * @param command The command to send
      */
     send<T>(command: Object): Promise<T> {
-        return this.emitter.emit<T>(command)
-            .then(resp => resp.payload);
+        if (this.isConnected) {
+            return this.emitter.emit<T>(command)
+                .then(resp => resp.payload);
+        }
+
+        return new Promise<T>((resolve, reject) => {
+            this._pendingCommands.push({ command, resolver: resolve, rejector: reject });
+        });
+    }
+
+    private sendPendingCommands(): void {
+        this._pendingCommands.forEach(pending => {
+            this._emitter.emit<any>(pending.command)
+                .then(resp => {
+                    pending.resolver(resp.payload);
+                })
+                .catch(e => pending.rejector(e));
+        });
     }
 
     /**

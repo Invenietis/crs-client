@@ -1,1 +1,1 @@
-import './command.spec';
+import './Command.spec';
