@@ -30,8 +30,3 @@ export function readCommandName(command: Object): string {
     const meta = readMetadata(command);
     return meta.name;
 }
-
-export function readCommandEvents(command: Object): string[] {
-    const meta = readMetadata(command);
-    return meta.events;
-}

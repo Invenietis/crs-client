@@ -1,6 +1,6 @@
 export {
     Command,
-    CommandEmitter,
+    BasicCommandEmitter,
     ConnectionStatus,
     CrsEndpoint,
     ResponseType,

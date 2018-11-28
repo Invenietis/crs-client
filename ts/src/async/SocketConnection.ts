@@ -10,7 +10,7 @@ export interface SocketConnection {
     onConnected(callback: () => void);
     onDisconnected(callback: () => void);
     onResult(callback: (data: any) => void);
-    getResultFor(commandId: string): Promise<any>;
+    getAsyncResult<T>(commandId: string): Promise<T>;
 
     open();
     close();

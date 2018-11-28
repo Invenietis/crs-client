@@ -1,6 +1,7 @@
 import {
-    CommandEmitter,
+    BasicCommandEmitter,
     AxiosCommandSender,
+    CommandEmitter,
     CommandResponse,
 } from './command';
 import {
@@ -33,11 +34,11 @@ export interface CrsEndpointConfiguration {
  * During the initialization phase, the CrsEndppoint will fetch the endpoint metadata to get information like the ambiant values, 
  * version number, etc. and try to establish a signalR connection
  */
-export class CrsEndpoint {
+export class CrsEndpoint<TResponse extends CommandResponse = CommandResponse> {
     metadata: EndpointMetadata;
     readonly endpoint: string;
     protected ambiantValuesProvider: AmbiantValuesProvider;
-    protected _emitter: CommandEmitter;
+    protected _emitter: CommandEmitter<TResponse>;
     protected _cmdSender: AxiosCommandSender;
     protected _configuration: CrsEndpointConfiguration;
     private _pendingCommands: Array<{
@@ -58,7 +59,7 @@ export class CrsEndpoint {
         this.ambiantValuesProvider = new AmbiantValuesProvider();
 
         this._cmdSender = new AxiosCommandSender(this._configuration.axiosInstance);
-        this._emitter = new CommandEmitter(
+        this._emitter = new BasicCommandEmitter(
             this.endpoint,
             this._cmdSender,
             this.ambiantValuesProvider
@@ -105,9 +106,9 @@ export class CrsEndpoint {
 
     /**
      * The endpoint {CommandEmitter}
-     * @returns {CommandEmitter}
+     * @returns {BasicCommandEmitter}
      */
-    get emitter(): CommandEmitter {
+    get emitter(): BasicCommandEmitter {
         return this._emitter;
     }
 

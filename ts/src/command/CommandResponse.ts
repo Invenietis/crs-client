@@ -1,10 +1,7 @@
-export interface CommandResponse<T> {
+export interface CommandResponse<T=any> {
     commandId: string;
     responseType: ResponseType;
     payload?: T
-}
-
-export interface AsynchronousCommandReponse<T> extends CommandResponse<Promise<T>> {
 }
 
 export enum ResponseType {
