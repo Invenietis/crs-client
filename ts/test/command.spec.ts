@@ -1,5 +1,5 @@
 import { assert, expect } from 'chai';
-import { Command, readCommandName } from '../src/command/Command';
+import { Command, readCommandName } from '../src/core/command/Command';
 
 // class FakeRequestSender implements CommandRequestSender {
 //     send(url: string, body: any, connectionId?: string) : Promise<CommandResponse<any>> {

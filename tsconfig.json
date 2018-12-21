@@ -4,7 +4,7 @@
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "module": "commonjs",
-        "target": "es5",
+        "target": "es2015",
         "moduleResolution": "node",
         "noEmitOnError": false,
         "outDir": ".",

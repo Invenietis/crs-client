@@ -1,8 +1,8 @@
 export {
     Command,
-    BasicCommandEmitter,
+    CommandEmitter,
     ConnectionStatus,
     CrsEndpoint,
     ResponseType,
     SocketConnection 
-} from './src';
+} from './src/core';
