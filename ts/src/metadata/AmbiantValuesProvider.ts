@@ -8,7 +8,7 @@ export class AmbiantValuesProvider {
         this._values = values;
     }
     
-    setValues(values) {
+    setValues(values: any) {
         this._values = values;
     }
 

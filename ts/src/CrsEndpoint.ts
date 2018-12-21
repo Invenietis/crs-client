@@ -1,8 +1,6 @@
 import {
-    BasicCommandEmitter,
     AxiosCommandSender,
     CommandEmitter,
-    CommandResponse,
 } from './command';
 import {
     EndpointMetadata,
@@ -12,6 +10,7 @@ import {
     defaultMetadataOptions
 } from './metadata';
 import http, { AxiosInstance } from 'axios';
+import { SocketConnection } from './async';
 
 export interface CrsEndpointConfiguration {
     /**
@@ -24,6 +23,11 @@ export interface CrsEndpointConfiguration {
      * Options for the retrived endpoint metadata
      */
     metadata?: MetadataOptions;
+
+    /**
+     * Provide a WebSocket connection to handle async command response
+     */
+    socketConnection?: SocketConnection;
 }
 
 /**
@@ -34,11 +38,11 @@ export interface CrsEndpointConfiguration {
  * During the initialization phase, the CrsEndppoint will fetch the endpoint metadata to get information like the ambiant values, 
  * version number, etc. and try to establish a signalR connection
  */
-export class CrsEndpoint<TResponse extends CommandResponse = CommandResponse> {
+export class CrsEndpoint {
     metadata: EndpointMetadata;
     readonly endpoint: string;
     protected ambiantValuesProvider: AmbiantValuesProvider;
-    protected _emitter: CommandEmitter<TResponse>;
+    protected _emitter: CommandEmitter;
     protected _cmdSender: AxiosCommandSender;
     protected _configuration: CrsEndpointConfiguration;
     private _pendingCommands: Array<{
@@ -59,10 +63,11 @@ export class CrsEndpoint<TResponse extends CommandResponse = CommandResponse> {
         this.ambiantValuesProvider = new AmbiantValuesProvider();
 
         this._cmdSender = new AxiosCommandSender(this._configuration.axiosInstance);
-        this._emitter = new BasicCommandEmitter(
+        this._emitter = new CommandEmitter(
             this.endpoint,
             this._cmdSender,
-            this.ambiantValuesProvider
+            this.ambiantValuesProvider,
+            this._configuration.socketConnection
         );
     }
 
@@ -106,9 +111,9 @@ export class CrsEndpoint<TResponse extends CommandResponse = CommandResponse> {
 
     /**
      * The endpoint {CommandEmitter}
-     * @returns {BasicCommandEmitter}
+     * @returns {CommandEmitter}
      */
-    get emitter(): BasicCommandEmitter {
+    get emitter(): CommandEmitter {
         return this._emitter;
     }
 

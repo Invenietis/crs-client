@@ -25,9 +25,7 @@
         ],
         "all": true
     },
-    "optionalDependencies": {
-        "@aspnet/signalr": "1.0.x"
-    },
+  
     "peerDependencies": {
         "axios": "0.x"
     },

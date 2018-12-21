@@ -3,10 +3,10 @@ import { AxiosInstance } from 'axios';
 
 export interface CommandRequestSender {
     send: (url: string, body: any, connectionId: string) => Promise<CommandResponse<any>>;
-    setConnectionIdPropertyName(queryString: string);
+    setConnectionIdPropertyName(queryString: string): void;
 }
 
-const serialize = function (obj) {
+const serialize = function (obj: any) {
     const str = [];
     for (let p in obj)
         if (obj.hasOwnProperty(p)) {
