@@ -5,6 +5,7 @@ import {
     CommandEmitter,
     CommandEmitterProxy,
     AxiosCommandSender,
+    ResponseType,
 } from './command';
 import {
     EndpointMetadata,
@@ -106,9 +107,13 @@ export class CrsEndpoint {
      * Send a command through the endpoint
      * @param command The command to send
      */
-    send<T>(command: Object): Promise<T> {
-        return this.emitter.emit<T>(command)
-            .then(resp => resp.payload);
+    async send<T>(command: Object): Promise<T> {
+        const response = await this.emitter.emit<T>(command);
+        if (response.responseType === ResponseType.InternalErrorResponseType) {
+            throw new Error(JSON.stringify(response.payload));
+        }
+        
+        return response.payload;
     }
 
     /**
